@@ -5,6 +5,8 @@
  */
 module.exports = function(grunt) {
 
+  var _ = grunt.util._;
+
   var lintOptions = {
     curly: true,
     eqeqeq: true,
@@ -20,11 +22,31 @@ module.exports = function(grunt) {
       exports: true,
       module: false,
       process: false,
-      require: false
+      require: false,
+      __dirname: false
     }
   };
 
+  var testLintOptions = _.clone(lintOptions, true);
+  _.merge(testLintOptions.globals, {
+    it: false,
+    describe: false,
+    beforeEach: false
+  });
+
+  var tasksSrc = 'tasks/**/*.spec.js';
+  var testSrc = 'test/**/*.js';
+  var fixturesSrc = 'test/fixtures/**/*.js';
+
   grunt.initConfig({
+    cafemocha: {
+      options: {
+        reporter: 'spec'
+      },
+      all: {
+        src: testSrc
+      }
+    },
     jshint: {
       gruntfile: {
         options: lintOptions,
@@ -32,7 +54,15 @@ module.exports = function(grunt) {
       },
       tasks: {
         options: lintOptions,
-        src: 'tasks/**/*'
+        src: tasksSrc
+      },
+      test: {
+        options: testLintOptions,
+        src: testSrc
+      },
+      fixtures: {
+        options: lintOptions,
+        src: fixturesSrc
       }
     },
     watch: {
@@ -41,16 +71,25 @@ module.exports = function(grunt) {
         tasks: ['jshint:gruntfile']
       },
       tasks: {
-        files: 'tasks/**/*',
-        tasks: ['jshint:lib', 'cafemocha']
+        files: tasksSrc,
+        tasks: ['jshint:tasks', 'cafemocha']
+      },
+      test: {
+        files: testSrc,
+        tasks: ['jshint:test', 'cafemocha']
+      },
+      fixtures: {
+        files: fixturesSrc,
+        tasks: ['jshint:fixtures', 'cafemocha']
       }
     }
   });
 
+  grunt.loadNpmTasks('grunt-cafe-mocha');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('test', ['jshint']);
+  grunt.registerTask('test', ['jshint', 'cafemocha']);
 
   grunt.registerTask('default', ['test']);
 
