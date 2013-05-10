@@ -72,3 +72,6 @@ This only needs to be set if you are not using the default `options.clone` value
  * Default value: `'Updates'`
 
 The commit message for all commits.
+
+
+[![Current Status](https://secure.travis-ci.org/tschaub/grunt-gh-pages.png?branch=master)](https://travis-ci.org/tschaub/grunt-gh-pages)
