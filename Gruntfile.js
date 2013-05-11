@@ -5,38 +5,6 @@
  */
 module.exports = function(grunt) {
 
-  var _ = grunt.util._;
-
-  var lintOptions = {
-    curly: true,
-    eqeqeq: true,
-    indent: 2,
-    latedef: true,
-    newcap: true,
-    nonew: true,
-    quotmark: 'single',
-    undef: true,
-    trailing: true,
-    maxlen: 80,
-    globals: {
-      exports: true,
-      module: false,
-      process: false,
-      require: false,
-      __dirname: false
-    }
-  };
-
-  var testLintOptions = _.clone(lintOptions, true);
-  _.merge(testLintOptions.globals, {
-    it: false,
-    describe: false,
-    before: false,
-    beforeEach: false,
-    after: false,
-    afterEach: false
-  });
-
   var tasksSrc = 'tasks/**/*.spec.js';
   var testSrc = 'test/**/*.js';
   var fixturesSrc = 'test/fixtures/**/*.js';
@@ -51,20 +19,22 @@ module.exports = function(grunt) {
       }
     },
     jshint: {
+      options: {
+        jshintrc: '.jshintrc'
+      },
       gruntfile: {
-        options: lintOptions,
         src: 'Gruntfile.js'
       },
       tasks: {
-        options: lintOptions,
         src: tasksSrc
       },
       test: {
-        options: testLintOptions,
+        options: {
+          jshintrc: 'test/.jshintrc'
+        },
         src: testSrc
       },
       fixtures: {
-        options: lintOptions,
         src: fixturesSrc
       }
     },
