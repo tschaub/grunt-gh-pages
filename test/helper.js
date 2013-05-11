@@ -1,9 +1,29 @@
 var path = require('path');
+var cp = require('child_process');
+var fs = require('fs');
 
 var tmp = require('tmp');
 var wrench = require('wrench');
 
 var fixtures = path.join(__dirname, 'fixtures');
+
+
+/**
+ * Spawn a Grunt process.
+ * @param {string} dir Directory with Gruntfile.js.
+ * @param {Array.<string>} args Arguments to pass to grunt.
+ * @param {function(Error, Process)} callback Callback.
+ */
+exports.spawnGrunt = function(dir, args, callback) {
+  if (!fs.existsSync(path.join(dir, 'Gruntfile.js'))) {
+    callback(new Error('Cannot find Gruntfile.js in dir: ') + dir);
+  } else {
+    var node = process.argv[0];
+    var grunt = process.argv[1]; // assumes grunt drives these tests
+    var child = cp.spawn(node, [grunt], {cwd: dir});
+    callback(null, child);
+  }
+};
 
 
 /**
@@ -13,8 +33,11 @@ var fixtures = path.join(__dirname, 'fixtures');
  */
 exports.beforeFixture = function(name, done) {
   var fixture = path.join(fixtures, name);
+  if (!fs.existsSync('./tmp')) {
+    fs.mkdirSync('./tmp');
+  }
 
-  tmp.dir(function(error, dir) {
+  tmp.dir({dir: './tmp'}, function(error, dir) {
     if (error) {
       return done(error);
     }

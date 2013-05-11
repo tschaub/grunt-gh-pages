@@ -1,5 +1,4 @@
 
-
 /** @param {Object} grunt Grunt. */
 module.exports = function(grunt) {
 
@@ -10,8 +9,8 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.loadTasks('../../../tasks');
-
-  grunt.registerTask('default', 'gh-pages');
+  grunt.registerTask('default', function() {
+    process.stdout.write('ok');
+  });
 
 };

@@ -29,4 +29,28 @@ describe('sanity', function() {
       done(error);
     });
   });
+
+  it('grunts', function(done) {
+    helper.spawnGrunt(scratch, [], function(error, child) {
+      if (error) {
+        return done(error);
+      }
+      var messages = [];
+      child.stderr.on('data', function(chunk) {
+        messages.push(chunk.toString());
+      });
+      child.stdout.on('data', function(chunk) {
+        messages.push(chunk.toString());
+      });
+      child.on('close', function(code) {
+        if (code !== 0) {
+          done(new Error('Task failed: ' + messages.join('')));
+        } else {
+          assert.ok(true, 'it grunts');
+          done();
+        }
+      });
+    });
+  });
+
 });
