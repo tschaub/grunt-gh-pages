@@ -29,7 +29,14 @@ exports.beforeFixture = function(name, done) {
 /**
  * Clean up after running tests.
  * @param {string} scratch Path to scratch directory.
+ * @param {function} done Callback.
  */
-exports.afterFixture = function(scratch) {
-  wrench.rmdirSyncRecursive(scratch, true);
+exports.afterFixture = function(scratch, done) {
+  var error;
+  try {
+    wrench.rmdirSyncRecursive(scratch, false);
+  } catch (err) {
+    error = err;
+  }
+  done(error);
 };

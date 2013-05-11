@@ -31,7 +31,10 @@ module.exports = function(grunt) {
   _.merge(testLintOptions.globals, {
     it: false,
     describe: false,
-    beforeEach: false
+    before: false,
+    beforeEach: false,
+    after: false,
+    afterEach: false
   });
 
   var tasksSrc = 'tasks/**/*.spec.js';
