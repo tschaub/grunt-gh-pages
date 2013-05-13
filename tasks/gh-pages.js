@@ -27,7 +27,7 @@ module.exports = function(grunt) {
     this.requiresConfig([this.name, 'src']);
 
     var repo = grunt.config([this.name, 'repo']);
-    var files = grunt.file.expand({filter: 'isFile'},
+    var files = grunt.file.expand({filter: 'isFile', cwd: process.cwd()},
         grunt.config([this.name, 'src']));
     if (!Array.isArray(files) || files.length === 0) {
       grunt.fatal(new Error('Files must be provided in the "src" property.'));
