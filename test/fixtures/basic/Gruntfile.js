@@ -8,12 +8,14 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     'gh-pages': {
+      options: {
+        user: {
+          name: 'My Name',
+          email: 'mail@example.com'
+        }
+      },
       repo: './repo',
-      src: ['hello.txt'],
-      user: {
-        name: 'My Name',
-        email: 'mail@example.com'
-      }
+      src: ['hello.txt']
     }
   });
 
