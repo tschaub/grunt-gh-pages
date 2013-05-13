@@ -11,19 +11,18 @@ var fixtures = path.join(__dirname, 'fixtures');
 /**
  * Spawn a Grunt process.
  * @param {string} dir Directory with Gruntfile.js.
- * @param {Array.<string>} args Arguments to pass to grunt.
- * @param {function(Error, Process)} callback Callback.
+ * @param {function(Error, Process)} done Callback.
  */
-exports.spawnGrunt = function(dir, args, callback) {
+function spawnGrunt(dir, done) {
   if (!fs.existsSync(path.join(dir, 'Gruntfile.js'))) {
-    callback(new Error('Cannot find Gruntfile.js in dir: ') + dir);
+    done(new Error('Cannot find Gruntfile.js in dir: ') + dir);
   } else {
     var node = process.argv[0];
     var grunt = process.argv[1]; // assumes grunt drives these tests
     var child = cp.spawn(node, [grunt], {cwd: dir});
-    callback(null, child);
+    done(null, child);
   }
-};
+}
 
 
 /**
@@ -31,7 +30,7 @@ exports.spawnGrunt = function(dir, args, callback) {
  * @param {string} name Fixture name.
  * @param {function} done Callback.
  */
-exports.beforeFixture = function(name, done) {
+function cloneFixture(name, done) {
   var fixture = path.join(fixtures, name);
   if (!fs.existsSync('./tmp')) {
     fs.mkdirSync('./tmp');
@@ -44,6 +43,40 @@ exports.beforeFixture = function(name, done) {
     var scratch = path.join(dir, name);
     wrench.copyDirRecursive(fixture, scratch, function(error) {
       done(error, scratch);
+    });
+  });
+}
+
+
+/**
+ * Clone a fixture and run the default Grunt task in it.
+ * @param {string} name Fixture name.
+ * @param {function(Error, scratch)} done Called with an error if the task
+ *     fails.  Called with the cloned fixture directory if the task succeeds.
+ */
+exports.buildFixture = function(name, done) {
+  cloneFixture(name, function(error, scratch) {
+    if (error) {
+      return done(error);
+    }
+    spawnGrunt(scratch, function(error, child) {
+      if (error) {
+        return done(error);
+      }
+      var messages = [];
+      child.stderr.on('data', function(chunk) {
+        messages.push(chunk.toString());
+      });
+      child.stdout.on('data', function(chunk) {
+        messages.push(chunk.toString());
+      });
+      child.on('close', function(code) {
+        if (code !== 0) {
+          done(new Error('Task failed: ' + messages.join('')));
+        } else {
+          done(null, scratch);
+        }
+      });
     });
   });
 };
@@ -63,3 +96,12 @@ exports.afterFixture = function(scratch, done) {
   }
   done(error);
 };
+
+
+/**
+ * Util function for handling spawned git processes as promises.
+ * @param {Array.<string>} args Arguments.
+ * @param {string} cwd Working directory.
+ * @return {Promise} A promise.
+ */
+exports.git = require('../lib/git');
