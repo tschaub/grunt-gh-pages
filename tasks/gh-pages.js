@@ -75,6 +75,18 @@ module.exports = function(grunt) {
           return git.add('.', options.clone);
         })
         .then(function() {
+          if (options.user) {
+            return git(['config', 'user.email', options.user.email],
+                options.clone).
+                then(function() {
+                  return git(['config', 'user.name', options.user.name],
+                      options.clone);
+                });
+          } else {
+            return Q.resolve();
+          }
+        })
+        .then(function() {
           grunt.log.writeln('Committing');
           return git.commit(options.message, options.clone);
         })

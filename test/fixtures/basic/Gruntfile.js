@@ -9,7 +9,11 @@ module.exports = function(grunt) {
   grunt.initConfig({
     'gh-pages': {
       repo: './repo',
-      src: ['hello.txt']
+      src: ['hello.txt'],
+      user: {
+        name: 'My Name',
+        email: 'mail@example.com'
+      }
     }
   });
 
@@ -21,6 +25,12 @@ module.exports = function(grunt) {
     git.init(cwd)
         .then(function() {
           return git.add('.', cwd);
+        })
+        .then(function() {
+          return git(['config', 'user.email', 'mail@example.com'], cwd);
+        })
+        .then(function() {
+          return git(['config', 'user.name', 'My Name'], cwd);
         })
         .then(function() {
           return git.commit('Initial commit', cwd);
