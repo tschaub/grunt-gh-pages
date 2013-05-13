@@ -10,20 +10,20 @@ chai.Assertion.includeStack = true;
 var assert = chai.assert;
 
 describe('sanity', function() {
-  var scratch;
+  var fixture;
   before(function(done) {
     helper.beforeFixture('sanity', function(error, dir) {
-      scratch = dir;
+      fixture = dir;
       done(error);
     });
   });
 
   after(function(done) {
-    helper.afterFixture(scratch, done);
+    helper.afterFixture(fixture, done);
   });
 
   it('exists', function(done) {
-    fs.stat(scratch, function(error, stats) {
+    fs.stat(fixture, function(error, stats) {
       assert.isTrue(!error, 'no error');
       assert.isTrue(stats.isDirectory(), 'directory');
       done(error);
@@ -31,7 +31,7 @@ describe('sanity', function() {
   });
 
   it('grunts', function(done) {
-    helper.spawnGrunt(scratch, [], function(error, child) {
+    helper.spawnGrunt(fixture, [], function(error, child) {
       if (error) {
         return done(error);
       }

@@ -5,8 +5,8 @@
  */
 module.exports = function(grunt) {
 
-  var tasksSrc = 'tasks/**/*.spec.js';
-  var testSrc = 'test/**/*.js';
+  var tasksSrc = 'tasks/**/*.js';
+  var testSrc = 'test/**/*.spec.js';
   var fixturesSrc = 'test/fixtures/**/*.js';
 
   grunt.initConfig({
