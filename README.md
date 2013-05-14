@@ -73,5 +73,11 @@ This only needs to be set if you are not using the default `options.clone` value
 
 The commit message for all commits.
 
+#### options.push
+ * Type: `Boolean`
+ * Default value: `true`
+
+Push branch to remote.  To commit only (with no push) set to `false`.
+
 
 [![Current Status](https://secure.travis-ci.org/tschaub/grunt-gh-pages.png?branch=master)](https://travis-ci.org/tschaub/grunt-gh-pages)

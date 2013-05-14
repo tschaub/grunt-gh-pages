@@ -38,6 +38,7 @@ module.exports = function(grunt) {
       clone: path.join('.grunt', pkg.name, this.name, 'repo'),
       branch: 'gh-pages',
       remote: 'origin',
+      push: true,
       message: 'Updates'
     });
 
@@ -91,9 +92,13 @@ module.exports = function(grunt) {
           return git.commit(options.message, options.clone);
         })
         .then(function() {
-          grunt.log.writeln('Pushing');
-          return git.push(options.remote, options.branch,
-              options.clone);
+          if (options.push) {
+            grunt.log.writeln('Pushing');
+            return git.push(options.remote, options.branch,
+                options.clone);
+          } else {
+            return Q.resolve();
+          }
         })
         .then(function() {
           done();
