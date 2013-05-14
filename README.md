@@ -29,7 +29,6 @@ grunt.initConfig({
     options: {
       // Task-specific options go here.
     },
-    repo: 'git@github.com:user/repo.git',
     src: ['index.html', 'js/**/*', 'css/**/*', 'img/**/*']
   }
 })
@@ -42,6 +41,14 @@ If a `gh-pages` branch already exists, it will be updated with all commits from 
 ### Options
 
 The default task options should work for most cases.  The options described below let you push to alternate branches, customize your commit messages, and more.
+
+#### options.repo
+ * Type: `String`
+ * Default value: remote url for current dir (assumes a git repository)
+
+By default, the `gh-pages` task assumes that the current working directory is a git repository, and that you want to push changes to a remote (default is `'origin'`) associated with the same repository.  This is the most common case - your `Gruntfile.js` builds static resources and the `gh-pages` task pushes them to a remote.
+
+If instead your `Gruntfile.js` is not in a git repository, or if you want to push to a remote configured in another repository, you can provide the repository URL in the `repo` option.
 
 #### options.git
  * Type: `String`
