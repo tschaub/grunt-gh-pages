@@ -9,13 +9,13 @@ module.exports = function(grunt) {
   grunt.initConfig({
     'gh-pages': {
       options: {
+        repo: './repo',
         push: false,
         user: {
           name: 'My Name',
           email: 'mail@example.com'
         }
       },
-      repo: './repo',
       src: ['hello.txt']
     }
   });
