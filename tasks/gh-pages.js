@@ -18,15 +18,35 @@ function copy(files, base, dest) {
   }));
 }
 
+function getRepo(options) {
+  if (options.repo) {
+    return Q.resolve(options.repo);
+  } else {
+    var repo;
+    return git(['config', '--get', 'remote.' + options.remote + '.url'],
+        process.cwd())
+        .progress(function(chunk) {
+          repo = String(chunk).split(/[\n\r]/).shift();
+        })
+        .then(function() {
+          if (repo) {
+            return Q.resolve(repo);
+          } else {
+            return Q.reject(new Error(
+                'Failed to get repo URL from options or current directory'));
+          }
+        })
+        .fail(Q.reject);
+  }
+}
+
 
 /** @param {Object} grunt Grunt. */
 module.exports = function(grunt) {
 
   grunt.registerTask('gh-pages', 'Publish to gh-pages.', function() {
-    this.requiresConfig([this.name, 'repo']);
     this.requiresConfig([this.name, 'src']);
 
-    var repo = grunt.config([this.name, 'repo']);
     var files = grunt.file.expand({filter: 'isFile', cwd: process.cwd()},
         grunt.config([this.name, 'src']));
     if (!Array.isArray(files) || files.length === 0) {
@@ -46,8 +66,11 @@ module.exports = function(grunt) {
 
     git.exe(options.git);
 
-    grunt.log.writeln('Cloning ' + repo + ' into ' + options.clone);
-    git.clone(repo, options.clone)
+    getRepo(options)
+        .then(function(repo) {
+          grunt.log.writeln('Cloning ' + repo + ' into ' + options.clone);
+          return git.clone(repo, options.clone);
+        })
         .then(function() {
           // only required if someone mucks with the checkout between builds
           grunt.log.writeln('Cleaning');

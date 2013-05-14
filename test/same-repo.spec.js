@@ -10,11 +10,11 @@ var helper = require('./helper');
 chai.Assertion.includeStack = true;
 var assert = chai.assert;
 
-describe('unpushed', function() {
+describe('same-repo', function() {
   var fixture, repo;
 
   before(function(done) {
-    helper.buildFixture('unpushed', function(error, dir) {
+    helper.buildFixture('same-repo', function(error, dir) {
       fixture = dir;
       repo = path.join(fixture, '.grunt/grunt-gh-pages/gh-pages/repo');
       done(error);
@@ -46,15 +46,12 @@ describe('unpushed', function() {
         .fail(done);
   });
 
-  it('does not push the gh-pages branch to remote', function(done) {
+  it('pushes the gh-pages branch to remote', function(done) {
     helper.git(['ls-remote', '--exit-code', '.', 'origin/gh-pages'], repo)
         .then(function() {
-          done(new Error('Expected not to find origin/gh-pages'));
-        })
-        .fail(function() {
-          // failure on the ls-remote is what we're looking for (no push)
           done();
-        });
+        })
+        .fail(done);
   });
 
 });
