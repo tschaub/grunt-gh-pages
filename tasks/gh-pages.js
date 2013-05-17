@@ -6,14 +6,14 @@ var fs = require('q-io/fs');
 var pkg = require('../package.json');
 var git = require('../lib/git');
 
-
 // copy files to a destination directory
 function copy(files, base, dest) {
   return Q.all(files.map(function(file) {
-    var relative = path.relative(base, file);
+    var absolute = path.resolve(base, file);
+    var relative = path.relative(base, absolute);
     var target = path.join(dest, relative);
     return fs.makeTree(path.dirname(target)).then(function() {
-      return fs.copy(file, target);
+      return fs.copy(absolute, target);
     });
   }));
 }
@@ -47,20 +47,27 @@ module.exports = function(grunt) {
   grunt.registerTask('gh-pages', 'Publish to gh-pages.', function() {
     this.requiresConfig([this.name, 'src']);
 
-    var files = grunt.file.expand({filter: 'isFile', cwd: process.cwd()},
-        grunt.config([this.name, 'src']));
-    if (!Array.isArray(files) || files.length === 0) {
-      grunt.fatal(new Error('Files must be provided in the "src" property.'));
-    }
-
     var options = this.options({
       git: 'git',
       clone: path.join('.grunt', pkg.name, this.name, 'repo'),
       branch: 'gh-pages',
       remote: 'origin',
+      base: process.cwd(),
       push: true,
       message: 'Updates'
     });
+
+    if (!grunt.file.isDir(options.base)) {
+      grunt.fatal(new Error('The "base" option must be an existing directory'));
+    }
+
+    var files = grunt.file.expand(
+        {filter: 'isFile', cwd: options.base},
+        grunt.config([this.name, 'src']));
+
+    if (!Array.isArray(files) || files.length === 0) {
+      grunt.fatal(new Error('Files must be provided in the "src" property.'));
+    }
 
     var done = this.async();
 
@@ -92,7 +99,7 @@ module.exports = function(grunt) {
         })
         .then(function() {
           grunt.log.writeln('Copying files');
-          return copy(files, process.cwd(), options.clone);
+          return copy(files, options.base, options.clone);
         })
         .then(function() {
           grunt.log.writeln('Adding all');

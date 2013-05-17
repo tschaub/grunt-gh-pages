@@ -42,9 +42,15 @@ If a `gh-pages` branch already exists, it will be updated with all commits from 
 
 The default task options should work for most cases.  The options described below let you push to alternate branches, customize your commit messages, and more.
 
+#### options.base
+ * type: `String`
+ * default: `process.cwd()`
+
+The base directory for all source files (those listed in the `src` config property).  By default, source files are assumed to be relative to the current working directory, and they will be copied to the target with this relative path.  If your source files are all in a different directory (say, `build`), and you want them to be copied with a path relative to that directory, provide the directory path in the `base` option (e.g. `base: 'build'`).
+
 #### options.repo
- * Type: `String`
- * Default value: remote url for current dir (assumes a git repository)
+ * type: `String`
+ * default: remote url for current dir (assumes a git repository)
 
 By default, the `gh-pages` task assumes that the current working directory is a git repository, and that you want to push changes to a remote (default is `'origin'`) associated with the same repository.  This is the most common case - your `Gruntfile.js` builds static resources and the `gh-pages` task pushes them to a remote.
 

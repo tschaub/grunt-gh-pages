@@ -10,11 +10,11 @@ var helper = require('./helper');
 chai.Assertion.includeStack = true;
 var assert = chai.assert;
 
-describe('basic', function() {
+describe('deep-base', function() {
   var fixture, repo;
 
   before(function(done) {
-    helper.buildFixture('basic', function(error, dir) {
+    helper.buildFixture('deep-base', function(error, dir) {
       fixture = dir;
       repo = path.join(fixture, '.grunt/grunt-gh-pages/gh-pages/repo');
       done(error);
@@ -44,6 +44,16 @@ describe('basic', function() {
           done();
         })
         .fail(done);
+  });
+
+  it('copies source files relative to the base', function(done) {
+    fs.exists(path.join(repo, 'hello.txt'), function(exists) {
+      if (!exists) {
+        done(new Error('Failed to find "hello.txt" in repo: ') + repo);
+      } else {
+        done();
+      }
+    });
   });
 
   it('pushes the gh-pages branch to remote', function(done) {
