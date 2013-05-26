@@ -31,12 +31,36 @@ grunt.initConfig({
     },
     src: ['index.html', 'js/**/*', 'css/**/*', 'img/**/*']
   }
-})
+});
 ```
 
 Running this task with `grunt gh-pages` will create a temporary clone of the current repository, create a `gh-pages` branch if one doesn't already exist, copy over all files specified in the `src` configuration, commit all changes, and push to the `origin` remote.
 
 If a `gh-pages` branch already exists, it will be updated with all commits from the remote before adding any commits from the provided `src` files.  **Note** that any files in the `gh-pages` branch that are *not* in the `src` files **will be removed**.
+
+The `gh-pages` task is a multi-task, so different targets can be configured with different `src` files and `options`.  For example, to have the `gh-pages:gh-pages` target push to `gh-pages` and a second `gh-pages:foo` target push to a `bar` branch, the multi-task could be configured as follows:
+
+```js
+grunt.initConfig({
+  'gh-pages': {
+    options: {
+      // Options for all targets go here.
+    },
+    'gh-pages': {
+      // These files will get pushed to the `gh-pages` branch (the default).
+      src: ['index.html']
+    },
+    'foo': {
+      options: {
+        branch: 'bar'
+      },
+      // These files will get pushed to the `bar` branch.
+      src: ['other.txt']
+    }
+  }
+});
+```
+
 
 ### Options
 
