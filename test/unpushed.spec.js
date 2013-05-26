@@ -16,7 +16,7 @@ describe('unpushed', function() {
   before(function(done) {
     helper.buildFixture('unpushed', function(error, dir) {
       fixture = dir;
-      repo = path.join(fixture, '.grunt/grunt-gh-pages/gh-pages/repo');
+      repo = path.join(fixture, '.grunt/grunt-gh-pages/gh-pages/src');
       done(error);
     });
   });
@@ -25,7 +25,7 @@ describe('unpushed', function() {
     helper.afterFixture(fixture, done);
   });
 
-  it('creates .grunt/grunt-gh-pages/gh-pages/repo directory', function(done) {
+  it('creates .grunt/grunt-gh-pages/gh-pages/src directory', function(done) {
     fs.stat(repo, function(error, stats) {
       assert.isTrue(!error, 'no error');
       assert.isTrue(stats.isDirectory(), 'directory');
