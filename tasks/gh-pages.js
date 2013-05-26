@@ -44,12 +44,27 @@ function getRepo(options) {
 /** @param {Object} grunt Grunt. */
 module.exports = function(grunt) {
 
-  grunt.registerTask('gh-pages', 'Publish to gh-pages.', function() {
-    this.requiresConfig([this.name, 'src']);
+  grunt.registerMultiTask('gh-pages', 'Publish to gh-pages.', function() {
+
+    var src;
+    var data = this.data;
+    var kind = grunt.util.kindOf(data);
+    if (kind === 'string') {
+      src = [data];
+    } else if (kind === 'array') {
+      src = data;
+    } else if (kind === 'object') {
+      if (!('src' in data)) {
+        grunt.fatal(new Error('Required "src" property missing.'));
+      }
+      src = data.src;
+    } else {
+      grunt.fatal(new Error('Unexpected config: ' + String(data)));
+    }
 
     var options = this.options({
       git: 'git',
-      clone: path.join('.grunt', pkg.name, this.name, 'repo'),
+      clone: path.join('.grunt', pkg.name, this.name, this.target),
       branch: 'gh-pages',
       remote: 'origin',
       base: process.cwd(),
@@ -61,9 +76,7 @@ module.exports = function(grunt) {
       grunt.fatal(new Error('The "base" option must be an existing directory'));
     }
 
-    var files = grunt.file.expand(
-        {filter: 'isFile', cwd: options.base},
-        grunt.config([this.name, 'src']));
+    var files = grunt.file.expand({filter: 'isFile', cwd: options.base}, src);
 
     if (!Array.isArray(files) || files.length === 0) {
       grunt.fatal(new Error('Files must be provided in the "src" property.'));
