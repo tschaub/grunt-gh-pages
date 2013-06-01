@@ -72,6 +72,8 @@ The default task options should work for most cases.  The options described belo
 
 The base directory for all source files (those listed in the `src` config property).  By default, source files are assumed to be relative to the current working directory, and they will be copied to the target with this relative path.  If your source files are all in a different directory (say, `build`), and you want them to be copied with a path relative to that directory, provide the directory path in the `base` option (e.g. `base: 'build'`).
 
+See the [options doc](doc/options/#base) for more detail.
+
 #### options.repo
  * type: `String`
  * default: remote url for current dir (assumes a git repository)
