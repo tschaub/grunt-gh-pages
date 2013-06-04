@@ -6,6 +6,7 @@ var tmp = require('tmp');
 var wrench = require('wrench');
 
 var fixtures = path.join(__dirname, 'fixtures');
+var tmpDir = 'tmp';
 
 
 /**
@@ -32,11 +33,11 @@ function spawnGrunt(dir, done) {
  */
 function cloneFixture(name, done) {
   var fixture = path.join(fixtures, name);
-  if (!fs.existsSync('./tmp')) {
-    fs.mkdirSync('./tmp');
+  if (!fs.existsSync(tmpDir)) {
+    fs.mkdirSync(tmpDir);
   }
 
-  tmp.dir({dir: './tmp'}, function(error, dir) {
+  tmp.dir({dir: tmpDir}, function(error, dir) {
     if (error) {
       return done(error);
     }
@@ -91,6 +92,7 @@ exports.afterFixture = function(scratch, done) {
   var error;
   try {
     wrench.rmdirSyncRecursive(scratch, false);
+    wrench.rmdirSyncRecursive(tmpDir, false);
   } catch (err) {
     error = err;
   }
