@@ -39,7 +39,7 @@
     "grunt-contrib-jshint": "0.4.3",
     "grunt-contrib-watch": "0.4.2",
     "grunt-cli": "0.1.8",
-    "tmp": "0.0.18",
+    "tmp": "0.0.20",
     "wrench": "1.5.1"
   },
   "peerDependencies": {
