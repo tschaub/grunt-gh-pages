@@ -14,6 +14,7 @@ describe('multitask', function() {
   var fixture, repo1, repo2;
 
   before(function(done) {
+    this.timeout(3000);
     helper.buildFixture('multitask', function(error, dir) {
       fixture = dir;
       repo1 = path.join(fixture, '.grunt/grunt-gh-pages/gh-pages/first');

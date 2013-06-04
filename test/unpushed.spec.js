@@ -14,6 +14,7 @@ describe('unpushed', function() {
   var fixture, repo;
 
   before(function(done) {
+    this.timeout(3000);
     helper.buildFixture('unpushed', function(error, dir) {
       fixture = dir;
       repo = path.join(fixture, '.grunt/grunt-gh-pages/gh-pages/src');
