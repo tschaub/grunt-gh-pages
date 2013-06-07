@@ -119,6 +119,8 @@ If you are running the `gh-pages` task in a repository without a `user.name` or 
 #### options.push
  * type: `Boolean`
  * default: `true`
+ 
+Push branch to remote.  To commit only (with no push) set to `false`.
 
 #### options.tag
  * type: `String`
