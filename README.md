@@ -119,8 +119,14 @@ If you are running the `gh-pages` task in a repository without a `user.name` or 
 #### options.push
  * type: `Boolean`
  * default: `true`
-
+ 
 Push branch to remote.  To commit only (with no push) set to `false`.
+
+#### options.tag
+ * type: `String`
+ * default: ``
+
+A tag added to commit. If the repository already has a commit with this tag then tagging step will be ignored. 
 
 
 [![Current Status](https://secure.travis-ci.org/tschaub/grunt-gh-pages.png?branch=master)](https://travis-ci.org/tschaub/grunt-gh-pages)
