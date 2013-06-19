@@ -121,8 +121,8 @@ module.exports = function(grunt) {
         .then(function() {
           if (options.user) {
             return git(['config', 'user.email', options.user.email],
-                options.clone).
-                then(function() {
+                options.clone)
+                .then(function() {
                   return git(['config', 'user.name', options.user.name],
                       options.clone);
                 });
@@ -135,18 +135,19 @@ module.exports = function(grunt) {
           return git.commit(options.message, options.clone);
         })
         .then(function() {
-          if(options.tag){
+          if (options.tag) {
             grunt.log.writeln('Tagging');
             var deferred = Q.defer();
             git.tag(options.tag, options.clone)
               .then(function() {
-                return deferred.resolve();
-              }).fail(function (error) {
-                // tagging failed probably because this tag alredy exists
-                grunt.log.writeln('Tagging failed, continuing');
-                grunt.log.debug(error);
-                return deferred.resolve();
-              });
+                  return deferred.resolve();
+                })
+              .fail(function(error) {
+                  // tagging failed probably because this tag alredy exists
+                  grunt.log.writeln('Tagging failed, continuing');
+                  grunt.log.debug(error);
+                  return deferred.resolve();
+                });
             return deferred.promise;
           } else {
             return Q.resolve();
