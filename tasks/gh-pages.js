@@ -68,6 +68,7 @@ module.exports = function(grunt) {
       branch: 'gh-pages',
       remote: 'origin',
       base: process.cwd(),
+      only: grunt.option(pkg.name + '-only') || '.',
       push: true,
       message: 'Updates'
     });
@@ -77,6 +78,7 @@ module.exports = function(grunt) {
     }
 
     var files = grunt.file.expand({filter: 'isFile', cwd: options.base}, src);
+    var only = grunt.file.expand({cwd: options.base}, options.only);
 
     if (!Array.isArray(files) || files.length === 0) {
       grunt.fatal(new Error('Files must be provided in the "src" property.'));
@@ -107,8 +109,8 @@ module.exports = function(grunt) {
               options.clone);
         })
         .then(function() {
-          grunt.log.writeln('Removing all');
-          return git.rm('.', options.clone);
+          grunt.log.writeln('Removing files');
+          return git.rm(only.join(' '), options.clone);
         })
         .then(function() {
           grunt.log.writeln('Copying files');
