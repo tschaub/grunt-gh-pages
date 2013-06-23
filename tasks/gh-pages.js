@@ -62,16 +62,28 @@ module.exports = function(grunt) {
       grunt.fatal(new Error('Unexpected config: ' + String(data)));
     }
 
-    var options = this.options({
+    var defaults = {
       git: 'git',
       clone: path.join('.grunt', pkg.name, this.name, this.target),
       branch: 'gh-pages',
       remote: 'origin',
       base: process.cwd(),
-      only: grunt.option(pkg.name + '-only') || '.',
+      only: '.',
       push: true,
       message: 'Updates'
-    });
+    };
+
+    // override defaults with any task options
+    var options = this.options(defaults);
+
+    // allow command line options to override
+    var value;
+    for (var option in defaults) {
+      value = grunt.option(pkg.name + '-' + option);
+      if (value !== undefined) {
+        options[option] = value;
+      }
+    }
 
     if (!grunt.file.isDir(options.base)) {
       grunt.fatal(new Error('The "base" option must be an existing directory'));
