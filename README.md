@@ -124,9 +124,13 @@ Push branch to remote.  To commit only (with no push) set to `false`.
 
 #### options.tag
  * type: `String`
- * default: ``
+ * default: `''`
 
-A tag added to commit. If the repository already has a commit with this tag then tagging step will be ignored. 
+Create a tag after committing changes on the target branch.  By default, no tag is created.  To create a tag, provide the tag name as the option value.
+
+All options can be overriden with command line flags.  The pattern to provide an option is like `--gh-pages-optname foo` where `optname` is the option name and `foo` is the option value.  For example, to supply the `tag` option to the `gh-pages` branch, the task could be run as follows:
+
+    grunt gh-pages --gh-pages-tag foo
 
 
 [![Current Status](https://secure.travis-ci.org/tschaub/grunt-gh-pages.png?branch=master)](https://travis-ci.org/tschaub/grunt-gh-pages)
