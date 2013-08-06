@@ -6,13 +6,13 @@ Use [Grunt](http://gruntjs.com/) to push to your `gh-pages` branch hosted on Git
 ## Getting Started
 This plugin requires Grunt `~0.4.1`
 
-If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
+If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [`gruntfile.js`](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
 
 ```shell
 npm install grunt-gh-pages --save-dev
 ```
 
-Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
+Once the plugin has been installed, it may be enabled inside your `gruntfile.js` with this line:
 
 ```js
 grunt.loadNpmTasks('grunt-gh-pages');
@@ -21,7 +21,7 @@ grunt.loadNpmTasks('grunt-gh-pages');
 ## The `gh-pages` task
 
 ### Overview
-In your project's Gruntfile, add a section named `gh-pages` to the data object passed into `grunt.initConfig()`.
+In your project's Gruntfile, add a section named `gh-pages` to the data object passed into `initConfig`.
 
 ```js
 grunt.initConfig({
@@ -36,7 +36,9 @@ grunt.initConfig({
 
 Running this task with `grunt gh-pages` will create a temporary clone of the current repository, create a `gh-pages` branch if one doesn't already exist, copy over all files specified in the `src` configuration, commit all changes, and push to the `origin` remote.
 
-If a `gh-pages` branch already exists, it will be updated with all commits from the remote before adding any commits from the provided `src` files.  **Note** that any files in the `gh-pages` branch that are *not* in the `src` files **will be removed**.  See the `add` option if you don't want any of the existing files removed.
+If a `gh-pages` branch already exists, it will be updated with all commits from the remote before adding any commits from the provided `src` files.
+
+**Note** that any files in the `gh-pages` branch that are *not* in the `src` files **will be removed**.  See the [`add` option](#optionsadd) if you don't want any of the existing files removed.
 
 The `gh-pages` task is a multi-task, so different targets can be configured with different `src` files and `options`.  For example, to have the `gh-pages:gh-pages` target push to `gh-pages` and a second `gh-pages:foo` target push to a `bar` branch, the multi-task could be configured as follows:
 
@@ -68,11 +70,11 @@ The default task options work for simple cases cases.  The options described bel
 
 Options for all targets can be configured on the task level.  Individual tasks can also have their own options that override task level options.
 
-All options can be overriden with command line flags.  The pattern to provide an option is like `--gh-pages-optname foo` where `optname` is the option name and `foo` is the option value.  For example, to supply the `tag` and `message`, the task could be run as follows:
+All options can be overriden with command line flags.  The pattern to provide an option is like `--gh-pages-optname foo` where `optname` is the option name and `foo` is the option value.  For example, to supply the [`tag`](#optionstag) and [`message`](#optionsmessage), the task could be run as follows:
 
     grunt gh-pages --gh-pages-tag 'v1.2.3' --gh-pages-message 'Tagging v1.2.3'
 
-#### options.base
+#### <a id="optionsbase">options.base</a>
  * type: `string`
  * default: `process.cwd()`
 
@@ -106,7 +108,7 @@ grunt.initConfig({
 });
 ```
 
-#### options.add
+#### <a id="optionsadd">options.add</a>
  * type: `boolean`
  * default: `false`
 
@@ -129,13 +131,13 @@ grunt.initConfig({
 });
 ```
 
-#### options.repo
+#### <a id="optionsrepo">options.repo</a>
  * type: `string`
  * default: remote url for current dir (assumes a git repository)
 
-By default, the `gh-pages` task assumes that the current working directory is a git repository, and that you want to push changes to a remote (default is `'origin'`) associated with the same repository.  This is the most common case - your `Gruntfile.js` builds static resources and the `gh-pages` task pushes them to a remote.
+By default, the `gh-pages` task assumes that the current working directory is a git repository, and that you want to push changes to a remote (default is `'origin'`) associated with the same repository.  This is the most common case - your `gruntfile.js` builds static resources and the `gh-pages` task pushes them to a remote.
 
-If instead your `Gruntfile.js` is not in a git repository, or if you want to push to a remote configured in another repository, you can provide the repository URL in the `repo` option.
+If instead your `gruntfile.js` is not in a git repository, or if you want to push to a remote configured in another repository, you can provide the repository URL in the `repo` option.
 
 Example use of the `repo` option:
 
@@ -155,7 +157,7 @@ grunt.initConfig({
 });
 ```
 
-#### options.git
+#### <a id="optionsgit">options.git</a>
  * type: `string`
  * default: `'git'`
 
@@ -177,7 +179,7 @@ grunt.initConfig({
 });
 ```
 
-#### options.clone
+#### <a id="optionsclone">options.clone</a>
  * type: `string`
  * default: `'.grunt/grunt-gh-pages/gh-pages/repo'`
 
@@ -198,10 +200,11 @@ grunt.initConfig({
     },
     src: '**/*'
   }
-});```
+});
+```
 
 
-#### options.branch
+#### <a id="optionsbranch">options.branch</a>
  * type: `string`
  * default: `'gh-pages'`
 
@@ -224,11 +227,11 @@ grunt.initConfig({
 });
 ```
 
-#### options.remote
+#### <a id="optionsremote">options.remote</a>
  * type: `string`
  * default: `'origin'`
 
-This only needs to be set if you are not using the default `options.clone` value and you have a clone already configured with a different remote name.
+This only needs to be set if you are not using the default [`clone` option](#options-clone) and you have a clone already configured with a different remote name.
 
 Example use of the `remote` option:
 
@@ -247,7 +250,7 @@ grunt.initConfig({
 });
 ```
 
-#### options.message
+#### <a id="optionsmessage">options.message</a>
  * type: `string`
  * default: `'Updates'`
 
@@ -271,10 +274,12 @@ grunt.initConfig({
 
 Alternatively, this option can be set on the command line:
 
-    grunt gh-pages --gh-pages-message 'Making commits'
+```shell
+grunt gh-pages --gh-pages-message 'Making commits'
+```
 
 
-#### options.user
+#### <a id="optionsuser">options.user</a>
  * type: `Object`
  * default: `null`
 
@@ -296,7 +301,7 @@ grunt.initConfig({
 });
 ```
 
-#### options.push
+#### <a id="optionspush">options.push</a>
  * type: `boolean`
  * default: `true`
  
@@ -313,8 +318,9 @@ grunt.initConfig({
     src: '**/*'
   }
 });
+```
 
-#### options.tag
+#### <a id="optionstag">options.tag</a>
  * type: `string`
  * default: `''`
 
