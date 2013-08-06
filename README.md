@@ -67,19 +67,19 @@ grunt.initConfig({
 The default task options work for simple cases cases.  The options described below let you push to alternate branches, customize your commit messages, and more.
 
 #### options.base
- * type: `String`
+ * type: `string`
  * default: `process.cwd()`
 
 The base directory for all source files (those listed in the `src` config property).  By default, source files are assumed to be relative to the current working directory, and they will be copied to the target with this relative path.  If your source files are all in a different directory (say, `build`), and you want them to be copied with a path relative to that directory, provide the directory path in the `base` option (e.g. `base: 'build'`).
 
 #### options.add
- * type: `Boolean`
+ * type: `boolean`
  * default: `false`
 
 Only add, and never remove existing files.  By default, existing files in the target branch are removed before adding the ones from your `src` config.  If you want the task to add new `src` files but leave existing ones untouched, set `add: true` in your target options.
 
 #### options.repo
- * type: `String`
+ * type: `string`
  * default: remote url for current dir (assumes a git repository)
 
 By default, the `gh-pages` task assumes that the current working directory is a git repository, and that you want to push changes to a remote (default is `'origin'`) associated with the same repository.  This is the most common case - your `Gruntfile.js` builds static resources and the `gh-pages` task pushes them to a remote.
@@ -87,31 +87,31 @@ By default, the `gh-pages` task assumes that the current working directory is a 
 If instead your `Gruntfile.js` is not in a git repository, or if you want to push to a remote configured in another repository, you can provide the repository URL in the `repo` option.
 
 #### options.git
- * type: `String`
+ * type: `string`
  * default: `'git'`
 
 Your `git` executable.
 
 #### options.clone
- * type: `String`
+ * type: `string`
  * default: `'.grunt/grunt-gh-pages/gh-pages/repo'`
 
 Path to a directory where your repository will be cloned.  If this directory doesn't already exist, it will be created.  If it already exists, it is assumed to be a clone of your repository.  If you stick with the default value (recommended), you will likely want to add `.grunt` to your `.gitignore` file.
 
 #### options.branch
- * type: `String`
+ * type: `string`
  * default: `'gh-pages'`
 
 The name of the branch you'll be pushing to.  The default uses GitHub's `gh-pages` branch, but this same task can be used to push to any branch on any remote.
 
 #### options.remote
- * type: `String`
+ * type: `string`
  * default: `'origin'`
 
 This only needs to be set if you are not using the default `options.clone` value and you have a clone already configured with a different remote name.
 
 #### options.message
- * type: `String`
+ * type: `string`
  * default: `'Updates'`
 
 The commit message for all commits.
@@ -123,13 +123,13 @@ The commit message for all commits.
 If you are running the `gh-pages` task in a repository without a `user.name` or `user.email` git config properties (or on a machine without these global config properties), you must provide user info before git allows you to commit.  The `options.user` object accepts `name` and `email` string values to identify the committer.
 
 #### options.push
- * type: `Boolean`
+ * type: `boolean`
  * default: `true`
  
 Push branch to remote.  To commit only (with no push) set to `false`.
 
 #### options.tag
- * type: `String`
+ * type: `string`
  * default: `''`
 
 Create a tag after committing changes on the target branch.  By default, no tag is created.  To create a tag, provide the tag name as the option value.
