@@ -66,17 +66,68 @@ grunt.initConfig({
 
 The default task options work for simple cases cases.  The options described below let you push to alternate branches, customize your commit messages, and more.
 
+Options for all targets can be configured on the task level.  Individual tasks can also have their own options that override task level options.
+
+All options can be overriden with command line flags.  The pattern to provide an option is like `--gh-pages-optname foo` where `optname` is the option name and `foo` is the option value.  For example, to supply the `tag` and `message`, the task could be run as follows:
+
+    grunt gh-pages --gh-pages-tag 'v1.2.3' --gh-pages-message 'Tagging v1.2.3'
+
 #### options.base
  * type: `string`
  * default: `process.cwd()`
 
 The base directory for all source files (those listed in the `src` config property).  By default, source files are assumed to be relative to the current working directory, and they will be copied to the target with this relative path.  If your source files are all in a different directory (say, `build`), and you want them to be copied with a path relative to that directory, provide the directory path in the `base` option (e.g. `base: 'build'`).
 
+Example use of the `base` option:
+
+```js
+/**
+ * Given the following directory structure:
+ *
+ *   build/
+ *     index.html
+ *     js/
+ *       site.js
+ *
+ * The task below will create a `gh-pages` branch that looks like this:
+ *
+ *   index.html
+ *   js/
+ *     site.js
+ *
+ */
+grunt.initConfig({
+  'gh-pages': {
+    options: {
+      base: 'build'
+    },
+    src: '**/*'
+  }
+});
+```
+
 #### options.add
  * type: `boolean`
  * default: `false`
 
 Only add, and never remove existing files.  By default, existing files in the target branch are removed before adding the ones from your `src` config.  If you want the task to add new `src` files but leave existing ones untouched, set `add: true` in your target options.
+
+Example use of the `add` option:
+
+```js
+/**
+ * The task below will only add files to the `gh-pages` branch, never removing
+ * any existing files (even if they don't exist in the `src` config).
+ */
+grunt.initConfig({
+  'gh-pages': {
+    options: {
+      add: true
+    },
+    src: '**/*'
+  }
+});
+```
 
 #### options.repo
  * type: `string`
@@ -86,11 +137,45 @@ By default, the `gh-pages` task assumes that the current working directory is a 
 
 If instead your `Gruntfile.js` is not in a git repository, or if you want to push to a remote configured in another repository, you can provide the repository URL in the `repo` option.
 
+Example use of the `repo` option:
+
+```js
+/**
+ * If the current directory is not a clone of the repository you want to work
+ * with, set the URL for the repository in the `repo` option.  This task will
+ * push all files in the `src` config to the `gh-pages` branch of the `repo`.
+ */
+grunt.initConfig({
+  'gh-pages': {
+    options: {
+      repo: 'https://example.com/other/repo.git'
+    },
+    src: '**/*'
+  }
+});
+```
+
 #### options.git
  * type: `string`
  * default: `'git'`
 
 Your `git` executable.
+
+Example use of the `git` option:
+
+```js
+/**
+ * If `git` is not on your path, provide the path as shown below.
+ */
+grunt.initConfig({
+  'gh-pages': {
+    options: {
+      git: '/path/to/git'
+    },
+    src: '**/*'
+  }
+});
+```
 
 #### options.clone
  * type: `string`
@@ -98,11 +183,46 @@ Your `git` executable.
 
 Path to a directory where your repository will be cloned.  If this directory doesn't already exist, it will be created.  If it already exists, it is assumed to be a clone of your repository.  If you stick with the default value (recommended), you will likely want to add `.grunt` to your `.gitignore` file.
 
+Example use of the `clone` option:
+
+```js
+/**
+ * If you already have a temp directory, and want the repository cloned there,
+ * use the `clone` option as below.  To avoid re-cloning every time the task is
+ * run, this should be a directory that sticks around for a while.
+ */
+grunt.initConfig({
+  'gh-pages': {
+    options: {
+      clone: 'path/to/tmp/dir'
+    },
+    src: '**/*'
+  }
+});```
+
+
 #### options.branch
  * type: `string`
  * default: `'gh-pages'`
 
 The name of the branch you'll be pushing to.  The default uses GitHub's `gh-pages` branch, but this same task can be used to push to any branch on any remote.
+
+Example use of the `branch` option:
+
+```js
+/**
+ * This task pushes to the `master` branch of the configured `repo`.
+ */
+grunt.initConfig({
+  'gh-pages': {
+    options: {
+      branch: 'master',
+      repo: 'https://example.com/other/repo.git'
+    },
+    src: '**/*'
+  }
+});
+```
 
 #### options.remote
  * type: `string`
@@ -110,11 +230,49 @@ The name of the branch you'll be pushing to.  The default uses GitHub's `gh-page
 
 This only needs to be set if you are not using the default `options.clone` value and you have a clone already configured with a different remote name.
 
+Example use of the `remote` option:
+
+```js
+/**
+ * This task pushes to the `gh-pages` branch of the `upstream` remote.
+ */
+grunt.initConfig({
+  'gh-pages': {
+    options: {
+      clone: 'path/to/existing/clone',
+      remote: 'upstream'
+    },
+    src: '**/*'
+  }
+});
+```
+
 #### options.message
  * type: `string`
  * default: `'Updates'`
 
 The commit message for all commits.
+
+Example use of the `message` option:
+
+```js
+/**
+ * This adds commits with a custom message.
+ */
+grunt.initConfig({
+  'gh-pages': {
+    options: {
+      message: 'Auto-generated commit'
+    }
+    src: '**/*'
+  }
+});
+```
+
+Alternatively, this option can be set on the command line:
+
+    grunt gh-pages --gh-pages-message 'Making commits'
+
 
 #### options.user
  * type: `Object`
@@ -122,11 +280,39 @@ The commit message for all commits.
 
 If you are running the `gh-pages` task in a repository without a `user.name` or `user.email` git config properties (or on a machine without these global config properties), you must provide user info before git allows you to commit.  The `options.user` object accepts `name` and `email` string values to identify the committer.
 
+Example use of the `user` option:
+
+```js
+grunt.initConfig({
+  'gh-pages': {
+    options: {
+      user: {
+        name: 'Joe Code',
+        email: 'coder@example.com'
+      }
+    },
+    src: '**/*'
+  }
+});
+```
+
 #### options.push
  * type: `boolean`
  * default: `true`
  
 Push branch to remote.  To commit only (with no push) set to `false`.
+
+Example use of the `push` option:
+
+```js
+grunt.initConfig({
+  'gh-pages': {
+    options: {
+      push: false
+    },
+    src: '**/*'
+  }
+});
 
 #### options.tag
  * type: `string`
@@ -134,9 +320,9 @@ Push branch to remote.  To commit only (with no push) set to `false`.
 
 Create a tag after committing changes on the target branch.  By default, no tag is created.  To create a tag, provide the tag name as the option value.
 
-All options can be overriden with command line flags.  The pattern to provide an option is like `--gh-pages-optname foo` where `optname` is the option name and `foo` is the option value.  For example, to supply the `tag` option to the `gh-pages` branch, the task could be run as follows:
+Example use of the `tag` option from the command line:
 
-    grunt gh-pages --gh-pages-tag foo
+    grunt gh-pages --gh-pages-tag 'v3.2.1'
 
 
 [![Current Status](https://secure.travis-ci.org/tschaub/grunt-gh-pages.png?branch=master)](https://travis-ci.org/tschaub/grunt-gh-pages)
