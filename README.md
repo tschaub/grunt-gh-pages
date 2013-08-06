@@ -36,7 +36,7 @@ grunt.initConfig({
 
 Running this task with `grunt gh-pages` will create a temporary clone of the current repository, create a `gh-pages` branch if one doesn't already exist, copy over all files specified in the `src` configuration, commit all changes, and push to the `origin` remote.
 
-If a `gh-pages` branch already exists, it will be updated with all commits from the remote before adding any commits from the provided `src` files.  **Note** that any files in the `gh-pages` branch that are *not* in the `src` files **will be removed**.
+If a `gh-pages` branch already exists, it will be updated with all commits from the remote before adding any commits from the provided `src` files.  **Note** that any files in the `gh-pages` branch that are *not* in the `src` files **will be removed**.  See the `add` option if you don't want any of the existing files removed.
 
 The `gh-pages` task is a multi-task, so different targets can be configured with different `src` files and `options`.  For example, to have the `gh-pages:gh-pages` target push to `gh-pages` and a second `gh-pages:foo` target push to a `bar` branch, the multi-task could be configured as follows:
 
@@ -64,13 +64,19 @@ grunt.initConfig({
 
 ### Options
 
-The default task options should work for most cases.  The options described below let you push to alternate branches, customize your commit messages, and more.
+The default task options work for simple cases cases.  The options described below let you push to alternate branches, customize your commit messages, and more.
 
 #### options.base
  * type: `String`
  * default: `process.cwd()`
 
 The base directory for all source files (those listed in the `src` config property).  By default, source files are assumed to be relative to the current working directory, and they will be copied to the target with this relative path.  If your source files are all in a different directory (say, `build`), and you want them to be copied with a path relative to that directory, provide the directory path in the `base` option (e.g. `base: 'build'`).
+
+#### options.add
+ * type: `Boolean`
+ * default: `false`
+
+Only add, and never remove existing files.  By default, existing files in the target branch are removed before adding the ones from your `src` config.  If you want the task to add new `src` files but leave existing ones untouched, set `add: true` in your target options.
 
 #### options.repo
  * type: `String`
