@@ -15,7 +15,8 @@ module.exports = function(grunt) {
         reporter: 'spec'
       },
       all: {
-        src: testSrc
+        src: testSrc,
+        newer: true
       }
     },
     jshint: {
@@ -32,7 +33,8 @@ module.exports = function(grunt) {
         options: {
           jshintrc: 'test/.jshintrc'
         },
-        src: testSrc
+        src: testSrc,
+        newer: true
       },
       fixtures: {
         src: fixturesSrc

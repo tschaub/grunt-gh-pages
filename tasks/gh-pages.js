@@ -63,6 +63,7 @@ module.exports = function(grunt) {
     }
 
     var defaults = {
+      add: false,
       git: 'git',
       clone: path.join('.grunt', pkg.name, this.name, this.target),
       branch: 'gh-pages',
@@ -121,8 +122,12 @@ module.exports = function(grunt) {
               options.clone);
         })
         .then(function() {
-          grunt.log.writeln('Removing files');
-          return git.rm(only.join(' '), options.clone);
+          if (!options.add) {
+            grunt.log.writeln('Removing files');
+            return git.rm(only.join(' '), options.clone);
+          } else {
+            return Q.resolve();
+          }
         })
         .then(function() {
           grunt.log.writeln('Copying files');
