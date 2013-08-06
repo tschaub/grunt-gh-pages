@@ -2,6 +2,7 @@ var path = require('path');
 var cp = require('child_process');
 var fs = require('fs');
 
+var chai = require('chai');
 var tmp = require('tmp');
 var wrench = require('wrench');
 
@@ -107,3 +108,14 @@ exports.afterFixture = function(scratch, done) {
  * @return {Promise} A promise.
  */
 exports.git = require('../lib/git');
+
+
+/** @type {boolean} */
+chai.Assertion.includeStack = true;
+
+
+/**
+ * Chai's assert function configured to include stacks on failure.
+ * @type {function}
+ */
+exports.assert = chai.assert;

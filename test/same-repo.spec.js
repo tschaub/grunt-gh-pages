@@ -5,10 +5,7 @@ var chai = require('chai');
 
 var helper = require('./helper');
 
-
-/** @type {boolean} */
-chai.Assertion.includeStack = true;
-var assert = chai.assert;
+var assert = helper.assert;
 
 describe('same-repo', function() {
   var fixture, repo;
