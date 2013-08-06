@@ -157,52 +157,6 @@ grunt.initConfig({
 });
 ```
 
-#### <a id="optionsgit">options.git</a>
- * type: `string`
- * default: `'git'`
-
-Your `git` executable.
-
-Example use of the `git` option:
-
-```js
-/**
- * If `git` is not on your path, provide the path as shown below.
- */
-grunt.initConfig({
-  'gh-pages': {
-    options: {
-      git: '/path/to/git'
-    },
-    src: '**/*'
-  }
-});
-```
-
-#### <a id="optionsclone">options.clone</a>
- * type: `string`
- * default: `'.grunt/grunt-gh-pages/gh-pages/repo'`
-
-Path to a directory where your repository will be cloned.  If this directory doesn't already exist, it will be created.  If it already exists, it is assumed to be a clone of your repository.  If you stick with the default value (recommended), you will likely want to add `.grunt` to your `.gitignore` file.
-
-Example use of the `clone` option:
-
-```js
-/**
- * If you already have a temp directory, and want the repository cloned there,
- * use the `clone` option as below.  To avoid re-cloning every time the task is
- * run, this should be a directory that sticks around for a while.
- */
-grunt.initConfig({
-  'gh-pages': {
-    options: {
-      clone: 'path/to/tmp/dir'
-    },
-    src: '**/*'
-  }
-});
-```
-
 
 #### <a id="optionsbranch">options.branch</a>
  * type: `string`
@@ -227,28 +181,17 @@ grunt.initConfig({
 });
 ```
 
-#### <a id="optionsremote">options.remote</a>
+
+#### <a id="optionstag">options.tag</a>
  * type: `string`
- * default: `'origin'`
+ * default: `''`
 
-This only needs to be set if you are not using the default [`clone` option](#options-clone) and you have a clone already configured with a different remote name.
+Create a tag after committing changes on the target branch.  By default, no tag is created.  To create a tag, provide the tag name as the option value.
 
-Example use of the `remote` option:
+Example use of the `tag` option from the command line:
 
-```js
-/**
- * This task pushes to the `gh-pages` branch of the `upstream` remote.
- */
-grunt.initConfig({
-  'gh-pages': {
-    options: {
-      clone: 'path/to/existing/clone',
-      remote: 'upstream'
-    },
-    src: '**/*'
-  }
-});
-```
+    grunt gh-pages --gh-pages-tag 'v3.2.1'
+
 
 #### <a id="optionsmessage">options.message</a>
  * type: `string`
@@ -301,6 +244,54 @@ grunt.initConfig({
 });
 ```
 
+#### <a id="optionsclone">options.clone</a>
+ * type: `string`
+ * default: `'.grunt/grunt-gh-pages/gh-pages/repo'`
+
+Path to a directory where your repository will be cloned.  If this directory doesn't already exist, it will be created.  If it already exists, it is assumed to be a clone of your repository.  If you stick with the default value (recommended), you will likely want to add `.grunt` to your `.gitignore` file.
+
+Example use of the `clone` option:
+
+```js
+/**
+ * If you already have a temp directory, and want the repository cloned there,
+ * use the `clone` option as below.  To avoid re-cloning every time the task is
+ * run, this should be a directory that sticks around for a while.
+ */
+grunt.initConfig({
+  'gh-pages': {
+    options: {
+      clone: 'path/to/tmp/dir'
+    },
+    src: '**/*'
+  }
+});
+```
+
+
+#### <a id="optionsremote">options.remote</a>
+ * type: `string`
+ * default: `'origin'`
+
+This only needs to be set if you are not using the default [`clone` option](#options-clone) and you have a clone already configured with a different remote name.
+
+Example use of the `remote` option:
+
+```js
+/**
+ * This task pushes to the `gh-pages` branch of the `upstream` remote.
+ */
+grunt.initConfig({
+  'gh-pages': {
+    options: {
+      clone: 'path/to/existing/clone',
+      remote: 'upstream'
+    },
+    src: '**/*'
+  }
+});
+```
+
 #### <a id="optionspush">options.push</a>
  * type: `boolean`
  * default: `true`
@@ -320,15 +311,28 @@ grunt.initConfig({
 });
 ```
 
-#### <a id="optionstag">options.tag</a>
+
+#### <a id="optionsgit">options.git</a>
  * type: `string`
- * default: `''`
+ * default: `'git'`
 
-Create a tag after committing changes on the target branch.  By default, no tag is created.  To create a tag, provide the tag name as the option value.
+Your `git` executable.
 
-Example use of the `tag` option from the command line:
+Example use of the `git` option:
 
-    grunt gh-pages --gh-pages-tag 'v3.2.1'
+```js
+/**
+ * If `git` is not on your path, provide the path as shown below.
+ */
+grunt.initConfig({
+  'gh-pages': {
+    options: {
+      git: '/path/to/git'
+    },
+    src: '**/*'
+  }
+});
+```
 
 
 [![Current Status](https://secure.travis-ci.org/tschaub/grunt-gh-pages.png?branch=master)](https://travis-ci.org/tschaub/grunt-gh-pages)
