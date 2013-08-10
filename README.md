@@ -27,9 +27,9 @@ In your project's Gruntfile, add a section named `gh-pages` to the data object p
 grunt.initConfig({
   'gh-pages': {
     options: {
-      // Task-specific options go here.
+      base: 'dist'
     },
-    src: ['index.html', 'js/**/*', 'css/**/*', 'img/**/*']
+    src: ['**']
   }
 });
 ```
@@ -209,7 +209,7 @@ grunt.initConfig({
   'gh-pages': {
     options: {
       message: 'Auto-generated commit'
-    }
+    },
     src: '**/*'
   }
 });
