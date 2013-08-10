@@ -34,7 +34,7 @@ grunt.initConfig({
 });
 ```
 
-Running this task with `grunt gh-pages` will create a temporary clone of the current repository, create a `gh-pages` branch if one doesn't already exist, copy over all files specified in the `src` configuration, commit all changes, and push to the `origin` remote.
+Running this task with `grunt gh-pages` will create a temporary clone of the current repository, create a `gh-pages` branch if one doesn't already exist, copy over all files from the `dist` directory that match patterns from the`src` configuration, commit all changes, and push to the `origin` remote.
 
 If a `gh-pages` branch already exists, it will be updated with all commits from the remote before adding any commits from the provided `src` files.
 
