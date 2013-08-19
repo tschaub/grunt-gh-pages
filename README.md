@@ -49,11 +49,15 @@ grunt.initConfig({
       // Options for all targets go here.
     },
     'gh-pages': {
+      options: {
+        base: 'build'
+      },
       // These files will get pushed to the `gh-pages` branch (the default).
       src: ['index.html']
     },
     'foo': {
       options: {
+        base: 'bar-build',
         branch: 'bar'
       },
       // These files will get pushed to the `bar` branch.
@@ -124,6 +128,7 @@ Example use of the `add` option:
 grunt.initConfig({
   'gh-pages': {
     options: {
+      base: 'build',
       add: true
     },
     src: '**/*'
@@ -150,6 +155,7 @@ Example use of the `repo` option:
 grunt.initConfig({
   'gh-pages': {
     options: {
+      base: 'build',
       repo: 'https://example.com/other/repo.git'
     },
     src: '**/*'
@@ -173,6 +179,7 @@ Example use of the `branch` option:
 grunt.initConfig({
   'gh-pages': {
     options: {
+      base: 'build',
       branch: 'master',
       repo: 'https://example.com/other/repo.git'
     },
@@ -208,6 +215,7 @@ Example use of the `message` option:
 grunt.initConfig({
   'gh-pages': {
     options: {
+      base: 'build',
       message: 'Auto-generated commit'
     },
     src: '**/*'
@@ -234,6 +242,7 @@ Example use of the `user` option:
 grunt.initConfig({
   'gh-pages': {
     options: {
+      base: 'build',
       user: {
         name: 'Joe Code',
         email: 'coder@example.com'
@@ -261,6 +270,7 @@ Example use of the `clone` option:
 grunt.initConfig({
   'gh-pages': {
     options: {
+      base: 'build',
       clone: 'path/to/tmp/dir'
     },
     src: '**/*'
@@ -284,6 +294,7 @@ Example use of the `remote` option:
 grunt.initConfig({
   'gh-pages': {
     options: {
+      base: 'build',
       clone: 'path/to/existing/clone',
       remote: 'upstream'
     },
@@ -304,6 +315,7 @@ Example use of the `push` option:
 grunt.initConfig({
   'gh-pages': {
     options: {
+      base: 'build',
       push: false
     },
     src: '**/*'
@@ -327,6 +339,7 @@ Example use of the `git` option:
 grunt.initConfig({
   'gh-pages': {
     options: {
+      base: 'build',
       git: '/path/to/git'
     },
     src: '**/*'
