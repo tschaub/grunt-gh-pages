@@ -33,10 +33,15 @@ function getRepo(options) {
             return Q.resolve(repo);
           } else {
             return Q.reject(new Error(
-                'Failed to get repo URL from options or current directory'));
+                'Failed to get repo URL from options or current directory.'));
           }
         })
-        .fail(Q.reject);
+        .fail(function(err) {
+          return Q.reject(new Error(
+              'Failed to get remote.' + options.remote + '.url (' +
+              'task must either be run in a git repository with a configured ' +
+              'remote or must be configured with the "repo" option).'));
+        });
   }
 }
 
