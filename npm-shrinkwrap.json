@@ -1,0 +1,42 @@
+{
+  "name": "grunt-gh-pages",
+  "version": "0.7.0",
+  "dependencies": {
+    "q": {
+      "version": "0.9.3",
+      "from": "q@0.9.3"
+    },
+    "q-io": {
+      "version": "1.6.5",
+      "from": "q-io@1.6.5",
+      "dependencies": {
+        "qs": {
+          "version": "0.1.0",
+          "from": "qs@~0.1.0"
+        },
+        "url2": {
+          "version": "0.0.0",
+          "from": "url2@~0.0.0"
+        },
+        "mime": {
+          "version": "1.2.11",
+          "from": "mime@~1.2"
+        },
+        "mimeparse": {
+          "version": "0.1.4",
+          "from": "mimeparse@~0.1.4"
+        },
+        "collections": {
+          "version": "0.1.24",
+          "from": "collections@~0.1.3",
+          "dependencies": {
+            "weak-map": {
+              "version": "1.0.0",
+              "from": "weak-map@1.0.0"
+            }
+          }
+        }
+      }
+    }
+  }
+}
