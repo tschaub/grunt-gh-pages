@@ -59,10 +59,7 @@ module.exports = function(grunt) {
     } else if (kind === 'array') {
       src = data;
     } else if (kind === 'object') {
-      if (!('src' in data)) {
-        grunt.fatal(new Error('Required "src" property missing.'));
-      }
-      src = data.src;
+      src = data.src || [];
     } else {
       grunt.fatal(new Error('Unexpected config: ' + String(data)));
     }
@@ -76,6 +73,7 @@ module.exports = function(grunt) {
       base: process.cwd(),
       only: '.',
       push: true,
+      command: false,
       message: 'Updates'
     };
 
@@ -98,7 +96,7 @@ module.exports = function(grunt) {
     var files = grunt.file.expand({filter: 'isFile', cwd: options.base}, src);
     var only = grunt.file.expand({cwd: options.base}, options.only);
 
-    if (!Array.isArray(files) || files.length === 0) {
+    if (!options.command && (!Array.isArray(files) || files.length === 0)) {
       grunt.fatal(new Error('Files must be provided in the "src" property.'));
     }
 
@@ -135,8 +133,13 @@ module.exports = function(grunt) {
           }
         })
         .then(function() {
-          grunt.log.writeln('Copying files');
-          return copy(files, options.base, options.clone);
+          if (!options.command) {
+            grunt.log.writeln('Copying files');
+            return copy(files, options.base, options.clone);
+          } else {
+            grunt.log.writeln('Running: '+options.command.cmd);
+            return git.spawn(options.command.cmd, options.command.args);
+          }
         })
         .then(function() {
           grunt.log.writeln('Adding all');
