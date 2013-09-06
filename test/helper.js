@@ -17,7 +17,7 @@ var tmpDir = 'tmp';
  */
 function spawnGrunt(dir, done) {
   if (!fs.existsSync(path.join(dir, 'Gruntfile.js'))) {
-    done(new Error('Cannot find Gruntfile.js in dir: ') + dir);
+    done(new Error('Cannot find Gruntfile.js in dir: ' + dir));
   } else {
     var node = process.argv[0];
     var grunt = process.argv[1]; // assumes grunt drives these tests
