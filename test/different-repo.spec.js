@@ -1,8 +1,6 @@
 var fs = require('fs');
 var path = require('path');
 
-var chai = require('chai');
-
 var helper = require('./helper');
 
 var assert = helper.assert;
