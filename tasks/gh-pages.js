@@ -23,7 +23,7 @@ function getRepo(options) {
     return Q.resolve(options.repo);
   } else {
     var repo;
-    return git(['config', '--get', 'remote.' + options.remote + '.url'],
+    return git(['config', '--get', 'remote.origin.url'],
         process.cwd())
         .progress(function(chunk) {
           repo = String(chunk).split(/[\n\r]/).shift();
@@ -38,9 +38,9 @@ function getRepo(options) {
         })
         .fail(function(err) {
           return Q.reject(new Error(
-              'Failed to get remote.' + options.remote + '.url (' +
-              'task must either be run in a git repository with a configured ' +
-              'remote or must be configured with the "repo" option).'));
+              'Failed to get remote.origin.url (task must either be run in a ' +
+              'git repository with a configured origin remote or must be ' +
+              'configured with the "repo" option).'));
         });
   }
 }

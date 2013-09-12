@@ -138,11 +138,11 @@ grunt.initConfig({
 
 #### <a id="optionsrepo">options.repo</a>
  * type: `string`
- * default: remote url for current dir (assumes a git repository)
+ * default: url for the origin remote of the current dir (assumes a git repository)
 
-By default, the `gh-pages` task assumes that the current working directory is a git repository, and that you want to push changes to a remote (default is `'origin'`) associated with the same repository.  This is the most common case - your `gruntfile.js` builds static resources and the `gh-pages` task pushes them to a remote.
+By default, the `gh-pages` task assumes that the current working directory is a git repository, and that you want to push changes to the `origin` remote.  This is the most common case - your `gruntfile.js` builds static resources and the `gh-pages` task pushes them to a remote.
 
-If instead your `gruntfile.js` is not in a git repository, or if you want to push to a remote configured in another repository, you can provide the repository URL in the `repo` option.
+If instead your `gruntfile.js` is not in a git repository, or if you want to push to another repository, you can provide the repository URL in the `repo` option.
 
 Example use of the `repo` option:
 
