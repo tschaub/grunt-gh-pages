@@ -279,30 +279,6 @@ grunt.initConfig({
 ```
 
 
-#### <a id="optionsremote">options.remote</a>
- * type: `string`
- * default: `'origin'`
-
-This only needs to be set if you are not using the default [`clone` option](#options-clone) and you have a clone already configured with a different remote name.
-
-Example use of the `remote` option:
-
-```js
-/**
- * This task pushes to the `gh-pages` branch of the `upstream` remote.
- */
-grunt.initConfig({
-  'gh-pages': {
-    options: {
-      base: 'build',
-      clone: 'path/to/existing/clone',
-      remote: 'upstream'
-    },
-    src: '**/*'
-  }
-});
-```
-
 #### <a id="optionspush">options.push</a>
  * type: `boolean`
  * default: `true`
