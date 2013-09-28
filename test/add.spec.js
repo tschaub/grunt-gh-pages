@@ -11,10 +11,13 @@ describe('add', function() {
   before(function(done) {
     this.timeout(3000);
     helper.buildFixture('add', function(error, dir) {
+      if (error) {
+        return done(error);
+      }
       fixture = dir;
       repo1 = path.join(fixture, '.grunt/grunt-gh-pages/gh-pages/first');
       repo2 = path.join(fixture, '.grunt/grunt-gh-pages/gh-pages/second');
-      done(error);
+      done();
     });
   });
 
@@ -27,9 +30,11 @@ describe('add', function() {
    */
   it('creates .grunt/grunt-gh-pages/gh-pages/first directory', function(done) {
     fs.stat(repo1, function(error, stats) {
-      assert.isTrue(!error, 'no error');
+      if (error) {
+        return done(error);
+      }
       assert.isTrue(stats.isDirectory(), 'directory');
-      done(error);
+      done();
     });
   });
 
@@ -67,9 +72,11 @@ describe('add', function() {
    */
   it('creates .grunt/grunt-gh-pages/gh-pages/second directory', function(done) {
     fs.stat(repo2, function(error, stats) {
-      assert.isTrue(!error, 'no error');
+      if (error) {
+        return done(error);
+      }
       assert.isTrue(stats.isDirectory(), 'directory');
-      done(error);
+      done();
     });
   });
 
