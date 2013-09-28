@@ -11,9 +11,12 @@ describe('custom-clone-dir', function() {
   before(function(done) {
     this.timeout(3000);
     helper.buildFixture('custom-clone-dir', function(error, dir) {
+      if (error) {
+        return done(error);
+      }
       fixture = dir;
       repo = path.join(fixture, 'clone-dir');
-      done(error);
+      done();
     });
   });
 

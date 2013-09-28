@@ -1,22 +1,11 @@
 var path = require('path');
 
 var Q = require('q');
-var fs = require('q-io/fs');
 
 var pkg = require('../package.json');
 var git = require('../lib/git');
 
-// copy files to a destination directory
-function copy(files, base, dest) {
-  return Q.all(files.map(function(file) {
-    var absolute = path.resolve(base, file);
-    var relative = path.relative(base, absolute);
-    var target = path.join(dest, relative);
-    return fs.makeTree(path.dirname(target)).then(function() {
-      return fs.copy(absolute, target);
-    });
-  }));
-}
+var copy = require('../lib/util').copy;
 
 function getRepo(options) {
   if (options.repo) {
@@ -97,7 +86,6 @@ module.exports = function(grunt) {
 
     var files = grunt.file.expand({filter: 'isFile', cwd: options.base}, src);
     var only = grunt.file.expand({cwd: options.base}, options.only);
-
     if (!Array.isArray(files) || files.length === 0) {
       grunt.fatal(new Error('Files must be provided in the "src" property.'));
     }

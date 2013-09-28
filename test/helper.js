@@ -21,7 +21,7 @@ function spawnGrunt(dir, done) {
   } else {
     var node = process.argv[0];
     var grunt = process.argv[1]; // assumes grunt drives these tests
-    var child = cp.spawn(node, [grunt], {cwd: dir});
+    var child = cp.spawn(node, [grunt, '--stack', '--verbose'], {cwd: dir});
     done(null, child);
   }
 }
