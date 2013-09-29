@@ -11,10 +11,13 @@ describe('multitask', function() {
   before(function(done) {
     this.timeout(3000);
     helper.buildFixture('multitask', function(error, dir) {
+      if (error) {
+        return done(error);
+      }
       fixture = dir;
       repo1 = path.join(fixture, '.grunt/grunt-gh-pages/gh-pages/first');
       repo2 = path.join(fixture, '.grunt/grunt-gh-pages/gh-pages/second');
-      done(error);
+      done();
     });
   });
 

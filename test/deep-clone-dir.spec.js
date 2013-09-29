@@ -11,9 +11,12 @@ describe('deep-clone-dir', function() {
   before(function(done) {
     this.timeout(3000);
     helper.buildFixture('deep-clone-dir', function(error, dir) {
+      if (error) {
+        return done(error);
+      }
       fixture = dir;
       repo = path.join(fixture, 'path/to/clone-dir');
-      done(error);
+      done();
     });
   });
 
