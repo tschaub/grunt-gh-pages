@@ -97,7 +97,7 @@ module.exports = function(grunt) {
     getRepo(options)
         .then(function(repo) {
           grunt.log.writeln('Cloning ' + repo + ' into ' + options.clone);
-          return git.clone(repo, options.clone);
+          return git.clone(repo, options.clone, options.branch);
         })
         .then(function() {
           // only required if someone mucks with the checkout between builds
@@ -106,7 +106,7 @@ module.exports = function(grunt) {
         })
         .then(function() {
           grunt.log.writeln('Fetching ' + options.remote);
-          return git.fetch(options.remote, options.clone);
+          return git.fetch(options.remote, options.branch, options.clone);
         })
         .then(function() {
           grunt.log.writeln('Checking out ' + options.remote + '/' +
