@@ -97,7 +97,7 @@ module.exports = function(grunt) {
     getRepo(options)
         .then(function(repo) {
           grunt.log.writeln('Cloning ' + repo + ' into ' + options.clone);
-          return git.clone(repo, options.clone, options.branch);
+          return git.clone(repo, options.clone, options.branch, options);
         })
         .then(function() {
           // only required if someone mucks with the checkout between builds
