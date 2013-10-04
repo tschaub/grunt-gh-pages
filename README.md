@@ -282,7 +282,7 @@ grunt.initConfig({
 #### <a id="optionspush">options.push</a>
  * type: `boolean`
  * default: `true`
- 
+
 Push branch to remote.  To commit only (with no push) set to `false`.
 
 Example use of the `push` option:
@@ -293,6 +293,30 @@ grunt.initConfig({
     options: {
       base: 'build',
       push: false
+    },
+    src: '**/*'
+  }
+});
+```
+
+#### <a id="optionssilent">options.silent</a>
+ * type: `boolean`
+ * default: `false`
+
+Suppress logging.  This option should be used if the repository URL or other information passed to git commands is sensitive and should not be logged.  With silent `true` log messages are suppressed and error messages are sanitized.
+
+Example use of the `silent` option:
+
+```js
+/**
+ * This configuration will suppress logging and sanitize error messages.
+ */
+grunt.initConfig({
+  'gh-pages': {
+    options: {
+      base: 'build',
+      repo: 'https://' + process.env.GH_TOKEN + '@github.com/user/private-repo.git',
+      silent: true
     },
     src: '**/*'
   }
