@@ -65,7 +65,8 @@ module.exports = function(grunt) {
       base: process.cwd(),
       only: '.',
       push: true,
-      message: 'Updates'
+      message: 'Updates',
+      silent: false
     };
 
     // override defaults with any task options
@@ -92,42 +93,48 @@ module.exports = function(grunt) {
 
     var done = this.async();
 
+    function log(message) {
+      if (!options.silent) {
+        grunt.log.writeln(message);
+      }
+    }
+
     git.exe(options.git);
 
     getRepo(options)
         .then(function(repo) {
-          grunt.log.writeln('Cloning ' + repo + ' into ' + options.clone);
+          log('Cloning ' + repo + ' into ' + options.clone);
           return git.clone(repo, options.clone, options.branch, options);
         })
         .then(function() {
           // only required if someone mucks with the checkout between builds
-          grunt.log.writeln('Cleaning');
+          log('Cleaning');
           return git.clean(options.clone);
         })
         .then(function() {
-          grunt.log.writeln('Fetching ' + options.remote);
+          log('Fetching ' + options.remote);
           return git.fetch(options.remote, options.branch, options.clone);
         })
         .then(function() {
-          grunt.log.writeln('Checking out ' + options.remote + '/' +
+          log('Checking out ' + options.remote + '/' +
               options.branch);
           return git.checkout(options.remote, options.branch,
               options.clone);
         })
         .then(function() {
           if (!options.add) {
-            grunt.log.writeln('Removing files');
+            log('Removing files');
             return git.rm(only.join(' '), options.clone);
           } else {
             return Q.resolve();
           }
         })
         .then(function() {
-          grunt.log.writeln('Copying files');
+          log('Copying files');
           return copy(files, options.base, options.clone);
         })
         .then(function() {
-          grunt.log.writeln('Adding all');
+          log('Adding all');
           return git.add('.', options.clone);
         })
         .then(function() {
@@ -143,12 +150,12 @@ module.exports = function(grunt) {
           }
         })
         .then(function() {
-          grunt.log.writeln('Committing');
+          log('Committing');
           return git.commit(options.message, options.clone);
         })
         .then(function() {
           if (options.tag) {
-            grunt.log.writeln('Tagging');
+            log('Tagging');
             var deferred = Q.defer();
             git.tag(options.tag, options.clone)
               .then(function() {
@@ -156,7 +163,7 @@ module.exports = function(grunt) {
                 })
               .fail(function(error) {
                   // tagging failed probably because this tag alredy exists
-                  grunt.log.writeln('Tagging failed, continuing');
+                  log('Tagging failed, continuing');
                   grunt.log.debug(error);
                   return deferred.resolve();
                 });
@@ -167,7 +174,7 @@ module.exports = function(grunt) {
         })
         .then(function() {
           if (options.push) {
-            grunt.log.writeln('Pushing');
+            log('Pushing');
             return git.push(options.remote, options.branch,
                 options.clone);
           } else {
@@ -177,6 +184,10 @@ module.exports = function(grunt) {
         .then(function() {
           done();
         }, function(error) {
+          if (options.silent) {
+            error = new Error(
+                'Unspecified error (run without silent option for detail)');
+          }
           done(error);
         }, function(progress) {
           grunt.verbose.writeln(progress);
