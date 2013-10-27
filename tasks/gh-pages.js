@@ -12,30 +12,33 @@ function getCacheDir() {
   return path.join('.grunt', pkg.name);
 }
 
+function getRemoteUrl(dir, remote) {
+  var repo;
+  return git(['config', '--get', 'remote.' + remote + '.url'], dir)
+      .progress(function(chunk) {
+        repo = String(chunk).split(/[\n\r]/).shift();
+      })
+      .then(function() {
+        if (repo) {
+          return Q.resolve(repo);
+        } else {
+          return Q.reject(new Error(
+              'Failed to get repo URL from options or current directory.'));
+        }
+      })
+      .fail(function(err) {
+        return Q.reject(new Error(
+            'Failed to get remote.origin.url (task must either be run in a ' +
+            'git repository with a configured origin remote or must be ' +
+            'configured with the "repo" option).'));
+      });
+}
+
 function getRepo(options) {
   if (options.repo) {
     return Q.resolve(options.repo);
   } else {
-    var repo;
-    return git(['config', '--get', 'remote.origin.url'],
-        process.cwd())
-        .progress(function(chunk) {
-          repo = String(chunk).split(/[\n\r]/).shift();
-        })
-        .then(function() {
-          if (repo) {
-            return Q.resolve(repo);
-          } else {
-            return Q.reject(new Error(
-                'Failed to get repo URL from options or current directory.'));
-          }
-        })
-        .fail(function(err) {
-          return Q.reject(new Error(
-              'Failed to get remote.origin.url (task must either be run in a ' +
-              'git repository with a configured origin remote or must be ' +
-              'configured with the "repo" option).'));
-        });
+    return getRemoteUrl(process.cwd(), 'origin');
   }
 }
 
@@ -106,10 +109,26 @@ module.exports = function(grunt) {
 
     git.exe(options.git);
 
+    var repoUrl;
     getRepo(options)
         .then(function(repo) {
+          repoUrl = repo;
           log('Cloning ' + repo + ' into ' + options.clone);
           return git.clone(repo, options.clone, options.branch, options);
+        })
+        .then(function() {
+          return getRemoteUrl(options.clone, options.remote)
+              .then(function(url) {
+                if (url !== repoUrl) {
+                  var message = 'Remote url mismatch.  Got "' + url + '" ' +
+                      'but expected "' + repoUrl + '" in ' + options.clone +
+                      '.  If you have changed your "repo" option, try ' +
+                      'running `grunt gh-pages-clean` first.';
+                  return Q.reject(new Error(message));
+                } else {
+                  return Q.resolve();
+                }
+              });
         })
         .then(function() {
           // only required if someone mucks with the checkout between builds
