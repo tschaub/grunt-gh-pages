@@ -9,7 +9,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     'gh-pages': {
       options: {
-        repo: './repo',
+        repo: path.resolve('./repo'),
         user: {
           name: 'My Name',
           email: 'mail@example.com'
