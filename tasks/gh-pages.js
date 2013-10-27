@@ -1,11 +1,16 @@
 var path = require('path');
 
 var Q = require('q');
+var wrench = require('wrench');
 
 var pkg = require('../package.json');
 var git = require('../lib/git');
 
 var copy = require('../lib/util').copy;
+
+function getCacheDir() {
+  return path.join('.grunt', pkg.name);
+}
 
 function getRepo(options) {
   if (options.repo) {
@@ -59,7 +64,7 @@ module.exports = function(grunt) {
     var defaults = {
       add: false,
       git: 'git',
-      clone: path.join('.grunt', pkg.name, this.name, this.target),
+      clone: path.join(getCacheDir(), this.name, this.target),
       branch: 'gh-pages',
       remote: 'origin',
       base: process.cwd(),
@@ -192,6 +197,10 @@ module.exports = function(grunt) {
         }, function(progress) {
           grunt.verbose.writeln(progress);
         });
+  });
+
+  grunt.registerTask('gh-pages-clean', 'Clean cache dir', function() {
+    wrench.rmdirSyncRecursive(getCacheDir(), true);
   });
 
 };
