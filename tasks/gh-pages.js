@@ -68,6 +68,7 @@ module.exports = function(grunt) {
       add: false,
       git: 'git',
       clone: path.join(getCacheDir(), this.name, this.target),
+      dotfiles: false,
       branch: 'gh-pages',
       remote: 'origin',
       base: process.cwd(),
@@ -93,11 +94,17 @@ module.exports = function(grunt) {
       grunt.fatal(new Error('The "base" option must be an existing directory'));
     }
 
-    var files = grunt.file.expand({filter: 'isFile', cwd: options.base}, src);
-    var only = grunt.file.expand({cwd: options.base}, options.only);
+    var files = grunt.file.expand({
+      filter: 'isFile',
+      cwd: options.base,
+      dot: options.dotfiles
+    }, src);
+
     if (!Array.isArray(files) || files.length === 0) {
       grunt.fatal(new Error('Files must be provided in the "src" property.'));
     }
+
+    var only = grunt.file.expand({cwd: options.base}, options.only);
 
     var done = this.async();
 
