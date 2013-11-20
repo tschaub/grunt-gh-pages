@@ -112,6 +112,30 @@ grunt.initConfig({
 });
 ```
 
+#### <a id="optionsdotfiles">options.dotfiles</a>
+ * type: `boolean`
+ * default: `false`
+
+Include dotfiles.  By default, files starting with `.` are ignored unless they are explicitly provided in the `src` array.  If you want to also include dotfiles that otherwise match your `src` patterns, set `dotfiles: true` in your options.
+
+Example use of the `dotfiles` option:
+
+```js
+/**
+ * The task below will push dotfiles (directories and files)
+ * that otherwise match the `src` pattern.
+ */
+grunt.initConfig({
+  'gh-pages': {
+    options: {
+      base: 'dist',
+      dotfiles: true
+    },
+    src: '**/*'
+  }
+});
+```
+
 #### <a id="optionsadd">options.add</a>
  * type: `boolean`
  * default: `false`
