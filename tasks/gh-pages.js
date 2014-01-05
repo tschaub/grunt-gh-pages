@@ -69,6 +69,7 @@ module.exports = function(grunt) {
       git: 'git',
       clone: path.join(getCacheDir(), this.name, this.target),
       dotfiles: false,
+      nojekyll: false,
       branch: 'gh-pages',
       remote: 'origin',
       base: process.cwd(),
@@ -99,6 +100,28 @@ module.exports = function(grunt) {
       cwd: options.base,
       dot: options.dotfiles
     }, src);
+
+    if (options.nojekyll) {
+      var nojekyllPath = path.join(options.base, '.nojekyll');
+
+      if (grunt.file.isMatch('**/_*{,/**}', files)) {
+        if (!grunt.file.exists(nojekyllPath)) {
+          grunt.file.write(nojekyllPath, '');
+          grunt.log.writeln('File ' + nojekyllPath.cyan + ' created.');
+        } else if (grunt.file.isDir(nojekyllPath)) {
+          grunt.fail.warn(
+            'Unable to overwrite ' +
+            nojekyllPath +
+            ' because a directory exists at the same path.');
+        }
+        files.push('.nojekyll');
+        
+      } else if (grunt.file.isFile(nojekyllPath)) {
+        grunt.log.write('Cleaning ' + nojekyllPath + '...');
+        grunt.file.delete(nojekyllPath);
+        grunt.log.ok();
+      }
+    }
 
     if (!Array.isArray(files) || files.length === 0) {
       grunt.fatal(new Error('Files must be provided in the "src" property.'));
