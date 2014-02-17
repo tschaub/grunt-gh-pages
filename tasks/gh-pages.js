@@ -144,7 +144,7 @@ module.exports = function(grunt) {
         })
         .then(function() {
           log('Fetching ' + options.remote);
-          return git.fetch(options.remote, options.branch, options.clone);
+          return git.fetch(options.remote, options.clone);
         })
         .then(function() {
           log('Checking out ' + options.remote + '/' +
