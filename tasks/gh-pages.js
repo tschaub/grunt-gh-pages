@@ -4,7 +4,7 @@ var Q = require('q');
 var wrench = require('wrench');
 
 var pkg = require('../package.json');
-var git = require('../lib/git');
+var git = require('gh-pages').git;
 
 var copy = require('../lib/util').copy;
 

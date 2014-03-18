@@ -107,7 +107,7 @@ exports.afterFixture = function(scratch, done) {
  * @param {string} cwd Working directory.
  * @return {Promise} A promise.
  */
-exports.git = require('../lib/git');
+exports.git = require('gh-pages').git;
 
 
 /** @type {boolean} */

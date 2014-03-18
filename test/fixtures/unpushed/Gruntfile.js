@@ -1,6 +1,6 @@
 var path = require('path');
 
-var git = require('../../../lib/git');
+var git = require('gh-pages').git;
 
 
 /** @param {Object} grunt Grunt. */
