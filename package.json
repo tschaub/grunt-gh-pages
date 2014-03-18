@@ -28,8 +28,8 @@
     "test": "grunt test"
   },
   "dependencies": {
+    "gh-pages": "0.1.0",
     "q": "0.9.3",
-    "q-io": "1.6.5",
     "graceful-fs": "2.0.1",
     "async": "0.2.9",
     "wrench": "1.5.1"
