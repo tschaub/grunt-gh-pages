@@ -123,7 +123,7 @@ module.exports = function(grunt) {
      */
     function secureRepoUrl(url) {
       return url.replace(/(:\/\/)(.*)(@)/, function (str, a, b, c) {
-        return a + Array(b.length + 1).join("x") + c;
+        return a + new Array(b.length + 1).join('x') + c;
       });
     }
 
