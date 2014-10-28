@@ -104,8 +104,6 @@ module.exports = function(grunt) {
       grunt.fatal(new Error('Files must be provided in the "src" property.'));
     }
 
-    var only = grunt.file.expand({cwd: options.base}, options.only);
-
     var done = this.async();
 
     function log(message) {
@@ -155,7 +153,8 @@ module.exports = function(grunt) {
         .then(function() {
           if (!options.add) {
             log('Removing files');
-            return git.rm(only.join(' '), options.clone);
+            var only = grunt.file.expand({cwd: options.clone}, options.only);
+            return git.rm(only, options.clone);
           } else {
             return Q.resolve();
           }
