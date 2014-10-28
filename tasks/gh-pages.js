@@ -112,21 +112,37 @@ module.exports = function(grunt) {
       }
     }
 
+    /**
+     * Replace token or login:password with 'x' in repository url.
+     * @example
+     * // replace GH_TOKEN with 'x'.
+     * secureRepoUrl('https://[GH_TOKEN]@github.com/user/repo.git');
+     *
+     * @param {string} url Repository url.
+     * @returns {string} Safe repository url.
+     */
+    function secureRepoUrl(url) {
+      return url.replace(/(:\/\/)(.*)(@)/, function (str, a, b, c) {
+        return a + Array(b.length + 1).join("x") + c;
+      });
+    }
+
     git.exe(options.git);
 
     var repoUrl;
     getRepo(options)
         .then(function(repo) {
           repoUrl = repo;
-          log('Cloning ' + repo + ' into ' + options.clone);
+          log('Cloning ' + secureRepoUrl(repo) + ' into ' + options.clone);
           return git.clone(repo, options.clone, options.branch, options);
         })
         .then(function() {
           return getRemoteUrl(options.clone, options.remote)
               .then(function(url) {
                 if (url !== repoUrl) {
-                  var message = 'Remote url mismatch.  Got "' + url + '" ' +
-                      'but expected "' + repoUrl + '" in ' + options.clone +
+                  var message = 'Remote url mismatch.  Got "' +
+                      secureRepoUrl(url) + '" ' + 'but expected "' +
+                      secureRepoUrl(repoUrl) + '" in ' + options.clone +
                       '.  If you have changed your "repo" option, try ' +
                       'running `grunt gh-pages-clean` first.';
                   return Q.reject(new Error(message));
