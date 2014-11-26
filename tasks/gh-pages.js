@@ -170,7 +170,7 @@ module.exports = function(grunt) {
           if (!options.add) {
             log('Removing files');
             var only = grunt.file.expand({cwd: options.clone}, options.only);
-            return git.rm(only, options.clone);
+            return only.length ? git.rm(only, options.clone) : Q.resolve();
           } else {
             return Q.resolve();
           }
