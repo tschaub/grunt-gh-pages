@@ -122,7 +122,8 @@ module.exports = function(grunt) {
      * @returns {string} String with safe repository url.
      */
     function secureRepoUrl(str) {
-      return str.replace(/(https:\/\/)([^@\/\ ]+)(@github\.com)/ig, function (orig, a, b, c) {
+      var regex = /(https:\/\/)([^@\/\ ]+)(@github\.com)/ig;
+      return str.replace(regex, function (orig, a, b, c) {
         return a + new Array(b.length + 1).join('x') + c;
       });
     }
