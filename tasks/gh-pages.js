@@ -185,11 +185,18 @@ module.exports = function(grunt) {
           return git.add('.', options.clone);
         })
         .then(function() {
-          if (options.user) {
-            return git(['config', 'user.email', options.user.email],
+          var user = options.user;
+          if (user) {
+            if (typeof user === 'string') {
+              // parse a string into an object with `name`,
+              // `email` and `url` properties following npm conventions.
+              user = require('parse-author')(user);
+            }
+
+            return git(['config', 'user.email', user.email],
                 options.clone)
                 .then(function() {
-                  return git(['config', 'user.name', options.user.name],
+                  return git(['config', 'user.name', user.name],
                       options.clone);
                 });
           } else {
