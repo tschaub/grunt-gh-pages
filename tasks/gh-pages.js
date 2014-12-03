@@ -104,8 +104,6 @@ module.exports = function(grunt) {
       grunt.fatal(new Error('Files must be provided in the "src" property.'));
     }
 
-    var only = grunt.file.expand({cwd: options.base}, options.only);
-
     var done = this.async();
 
     function log(message) {
@@ -114,21 +112,38 @@ module.exports = function(grunt) {
       }
     }
 
+    /**
+     * Replace token or login:password with 'x' in repository url.
+     * @example
+     * // replace [GH_TOKEN] with 'x'.
+     * secureRepoUrl('https://[GH_TOKEN]@github.com/user/repo.git');
+     *
+     * @param {string} url String with repository url.
+     * @returns {string} String with safe repository url.
+     */
+    function secureRepoUrl(str) {
+      var regex = /(https:\/\/)([^@\/\ ]+)(@github\.com)/ig;
+      return str.replace(regex, function (orig, a, b, c) {
+        return a + new Array(b.length + 1).join('x') + c;
+      });
+    }
+
     git.exe(options.git);
 
     var repoUrl;
     getRepo(options)
         .then(function(repo) {
           repoUrl = repo;
-          log('Cloning ' + repo + ' into ' + options.clone);
+          log('Cloning ' + secureRepoUrl(repo) + ' into ' + options.clone);
           return git.clone(repo, options.clone, options.branch, options);
         })
         .then(function() {
           return getRemoteUrl(options.clone, options.remote)
               .then(function(url) {
                 if (url !== repoUrl) {
-                  var message = 'Remote url mismatch.  Got "' + url + '" ' +
-                      'but expected "' + repoUrl + '" in ' + options.clone +
+                  var message = 'Remote url mismatch.  Got "' +
+                      url + '" ' + 'but expected "' +
+                      repoUrl + '" in ' + options.clone +
                       '.  If you have changed your "repo" option, try ' +
                       'running `grunt gh-pages-clean` first.';
                   return Q.reject(new Error(message));
@@ -155,7 +170,8 @@ module.exports = function(grunt) {
         .then(function() {
           if (!options.add) {
             log('Removing files');
-            return git.rm(only.join(' '), options.clone);
+            var only = grunt.file.expand({cwd: options.clone}, options.only);
+            return only.length ? git.rm(only, options.clone) : Q.resolve();
           } else {
             return Q.resolve();
           }
@@ -169,11 +185,18 @@ module.exports = function(grunt) {
           return git.add('.', options.clone);
         })
         .then(function() {
-          if (options.user) {
-            return git(['config', 'user.email', options.user.email],
+          var user = options.user;
+          if (user) {
+            if (typeof user === 'string') {
+              // parse a string into an object with `name`,
+              // `email` and `url` properties following npm conventions.
+              user = require('parse-author')(user);
+            }
+
+            return git(['config', 'user.email', user.email],
                 options.clone)
                 .then(function() {
-                  return git(['config', 'user.name', options.user.name],
+                  return git(['config', 'user.name', user.name],
                       options.clone);
                 });
           } else {
@@ -218,6 +241,8 @@ module.exports = function(grunt) {
           if (options.silent) {
             error = new Error(
                 'Unspecified error (run without silent option for detail)');
+          } else {
+            error.message = secureRepoUrl(error.message);
           }
           done(error);
         }, function(progress) {

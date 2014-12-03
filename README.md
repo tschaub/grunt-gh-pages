@@ -255,7 +255,7 @@ grunt gh-pages --gh-pages-message 'Making commits'
 
 
 #### <a id="optionsuser">options.user</a>
- * type: `Object`
+ * type: `Object or string`
  * default: `null`
 
 If you are running the `gh-pages` task in a repository without a `user.name` or `user.email` git config properties (or on a machine without these global config properties), you must provide user info before git allows you to commit.  The `options.user` object accepts `name` and `email` string values to identify the committer.
@@ -275,6 +275,13 @@ grunt.initConfig({
     src: '**/*'
   }
 });
+```
+
+Also, this option can be a string following npm conventions ([package.json people fields](https://www.npmjs.org/doc/files/package.json.html#people-fields-author-contributors)):
+
+```js
+user: 'Joe Code <coder@example.com>'
+user: '<%= pkg.author %>' // string or object? - don't worry about it.
 ```
 
 #### <a id="optionsclone">options.clone</a>
