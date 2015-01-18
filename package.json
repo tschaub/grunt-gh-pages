@@ -28,10 +28,11 @@
     "test": "grunt test"
   },
   "dependencies": {
+    "async": "0.2.9",
+    "graceful-fs": "2.0.1",
     "q": "0.9.3",
     "q-io": "1.6.5",
-    "graceful-fs": "2.0.1",
-    "async": "0.2.9",
+    "url-safe": "^1.0.0",
     "wrench": "1.5.1"
   },
   "devDependencies": {
