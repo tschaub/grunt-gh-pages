@@ -1,6 +1,7 @@
 var path = require('path');
 
 var Q = require('q');
+var urlSafe = require('url-safe');
 var wrench = require('wrench');
 
 var pkg = require('../package.json');
@@ -120,7 +121,7 @@ module.exports = function(grunt) {
     getRepo(options)
         .then(function(repo) {
           repoUrl = repo;
-          log('Cloning ' + repo + ' into ' + options.clone);
+          log('Cloning ' + urlSafe(repo,'[secure]') + ' into ' + options.clone);
           return git.clone(repo, options.clone, options.branch, options);
         })
         .then(function() {
