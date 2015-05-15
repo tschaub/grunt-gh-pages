@@ -160,6 +160,44 @@ grunt.initConfig({
 });
 ```
 
+#### <a id="optionsonly">options.only</a>
+ * type: `string` or `array of strings`
+ * default: `'.'`
+
+When options.add is false, you may specify a filter to select the files to remove, instead of removing all files.
+
+Example of the `only` option:
+
+```js
+/**
+ * The task below will only remove the index.html and .js files from the
+ * `gh-pages` branch before copying over files from the `src`.
+ */
+grunt.initConfig({
+  'gh-pages': {
+    options: {
+      base: 'build',
+      only: ['index.html', '**/*.js']
+    },
+    src: '**/*'
+  }
+});
+
+/**
+ * The task below will only remove all files except the README.md from the
+ * `gh-pages` branch before copying over files from the `src`.
+ */
+grunt.initConfig({
+  'gh-pages': {
+    options: {
+      base: 'build',
+      only: ['**/*', '!README.md']
+    },
+    src: '**/*'
+  }
+});
+```
+
 #### <a id="optionsrepo">options.repo</a>
  * type: `string`
  * default: url for the origin remote of the current dir (assumes a git repository)
