@@ -6,8 +6,7 @@ var wrench = require('wrench');
 
 var pkg = require('../package.json');
 var git = require('../lib/git');
-
-var copy = require('../lib/util').copy;
+var util = require('../lib/util');
 
 function getCacheDir() {
   return path.join('.grunt', pkg.name);
@@ -74,6 +73,7 @@ module.exports = function(grunt) {
       remote: 'origin',
       base: process.cwd(),
       only: '.',
+      replace: [],
       push: true,
       message: 'Updates',
       silent: false
@@ -163,7 +163,34 @@ module.exports = function(grunt) {
         })
         .then(function() {
           log('Copying files');
-          return copy(files, options.base, options.clone);
+          return util.copy(files, options.base, options.clone);
+        })
+        .then(function() {
+          if (options.replace) {
+            log('Replacing strings');
+            kind = grunt.util.kindOf(options.replace);
+            if (kind === 'object') {
+              options.replace = [options.replace];
+            }
+            else if (kind !== 'array') {
+              log('options.replace should be an object or an array of objects');
+              return;
+            }
+            var replaceList = [];
+            options.replace.forEach(function(replaceOptions) {
+              replaceList.push({
+                  files: grunt.file.expand(
+                    {cwd: options.clone, filter: 'isFile' },
+                    replaceOptions.files),
+                  base: options.clone,
+                  regex: replaceOptions.regex,
+                  replacement: replaceOptions.replacement
+              });
+            });
+            return util.replaceInFiles(replaceList);
+          } else {
+            return Q.resolve();
+          }
         })
         .then(function() {
           log('Adding all');

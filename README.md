@@ -198,6 +198,31 @@ grunt.initConfig({
 });
 ```
 
+#### <a id="optionsonly">options.replace</a>
+ * type: `object` or `array of objects`
+ * default: empty array
+
+Apply a text replace on specified files (once copied to the destination branch) using a regular expression. This comes in handy when using files in a different folder of the source branch compared to the destination branch.
+
+The objects need to contain three attributes: `files` (a string or an array of strings listing the files), `regex` (the regular expression used for replacing) and `replacement` (the replacement string).
+
+Example of the `replace` option:
+
+```js
+/**
+ * The task below will replace '../build/js' for 'js' in the index.html file.
+ */
+grunt.initConfig({
+  'gh-pages': {
+    options: {
+      base: 'build',
+      replace: { files: 'index.html', regex: /\.\.\/build\/js/g, replacement: 'js' }
+    },
+    src: '**/*'
+  }
+});
+```
+
 #### <a id="optionsrepo">options.repo</a>
  * type: `string`
  * default: url for the origin remote of the current dir (assumes a git repository)
