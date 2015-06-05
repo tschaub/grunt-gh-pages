@@ -251,6 +251,33 @@ grunt.initConfig({
 ```
 
 
+#### <a id="optionsmove">options.move</a>
+ * type: `object` or `array of objects`
+ * default: empty array
+
+Move files around in the cloned repository. This will be done after the files have been copied from the source directory and before adding the files to git.
+Each object should contain three attributes: `base`, `src` and `dest`.
+`base` is the base directory to move the files from.
+`src` selects the files to move.
+`dest` is the destination directory to move the files to.
+
+Example use of the `move` option:
+
+```js
+/**
+ * This task moves all `.js` files in `build/js/` to `demo/js/` while keeping the directory structure within `js` intact.
+ */
+grunt.initConfig({
+  'gh-pages': {
+    options: {
+      move: [{base: 'build/', src: 'js/**/*.js', dest: 'demo/'}]
+    },
+    src: '**/*'
+  }
+});
+```
+
+
 #### <a id="optionstag">options.tag</a>
  * type: `string`
  * default: `''`

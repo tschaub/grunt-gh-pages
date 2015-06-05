@@ -7,7 +7,7 @@ var wrench = require('wrench');
 var pkg = require('../package.json');
 var git = require('../lib/git');
 
-var copy = require('../lib/util').copy;
+var util = require('../lib/util');
 
 function getCacheDir() {
   return path.join('.grunt', pkg.name);
@@ -74,6 +74,7 @@ module.exports = function(grunt) {
       remote: 'origin',
       base: process.cwd(),
       only: '.',
+      move: [],
       push: true,
       message: 'Updates',
       silent: false
@@ -163,7 +164,27 @@ module.exports = function(grunt) {
         })
         .then(function() {
           log('Copying files');
-          return copy(files, options.base, options.clone);
+          return util.copy(files, options.base, options.clone);
+        })
+        .then(function() {
+          if(options.move) {
+            log('Moving files around');
+            if(!Array.isArray(options.move)) {
+              options.move = [options.move];
+            }
+            var moveFiles = [];
+            options.move.forEach(function(move) {
+              moveFiles.push({
+                files: grunt.file.expand({
+                  filter: 'isFile',
+                  cwd: path.join(options.clone, move.base),
+                  dot: options.dotfiles
+                  }, move.src),
+                base: path.join(options.clone, move.base),
+                dest: path.join(options.clone, move.dest)})
+            });
+            return util.multiCopy(moveFiles, true);
+          }
         })
         .then(function() {
           log('Adding all');
