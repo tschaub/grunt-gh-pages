@@ -154,11 +154,12 @@ module.exports = function(grunt) {
         .then(function() {
           if (!options.add) {
             log('Removing files');
-            var only = grunt.file.expand({cwd: options.clone}, options.only);
+            var only = grunt.file.expand(
+                {cwd: options.clone, filter: 'isFile'}, options.only);
             if(only.length <= 0) {
               return Q.resolve();
             }
-            return git.rm(only.join(' '), options.clone);
+            return git.rm(only, options.clone);
           } else {
             return Q.resolve();
           }
