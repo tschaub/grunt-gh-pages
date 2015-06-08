@@ -72,7 +72,7 @@ module.exports = function(grunt) {
       dotfiles: false,
       branch: 'gh-pages',
       remote: 'origin',
-      base: process.cwd(),
+      base: './',
       only: '.',
       push: true,
       message: 'Updates',
@@ -104,8 +104,6 @@ module.exports = function(grunt) {
     if (!Array.isArray(files) || files.length === 0) {
       grunt.fatal(new Error('Files must be provided in the "src" property.'));
     }
-
-    var only = grunt.file.expand({cwd: options.base}, options.only);
 
     var done = this.async();
 
@@ -156,6 +154,10 @@ module.exports = function(grunt) {
         .then(function() {
           if (!options.add) {
             log('Removing files');
+            var only = grunt.file.expand({cwd: options.clone}, options.only);
+            if(only.length <= 0) {
+              return Q.resolve();
+            }
             return git.rm(only.join(' '), options.clone);
           } else {
             return Q.resolve();
