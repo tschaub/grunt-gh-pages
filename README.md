@@ -361,6 +361,25 @@ grunt.initConfig({
 });
 ```
 
+#### <a id="optionsforcepush">options.forcePush</a>
+ * type: `boolean`
+ * default: `false`
+
+Force push branch to remote via the --force flag.  Beware: this will overwrite history.  Use with caution.
+
+Example use of the `forcePush` option:
+
+```js
+grunt.initConfig({
+  'gh-pages': {
+    options: {
+      forcePush: true
+    },
+    src: '**/*'
+  }
+});
+```
+
 #### <a id="optionssilent">options.silent</a>
  * type: `boolean`
  * default: `false`
