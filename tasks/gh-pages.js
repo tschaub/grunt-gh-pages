@@ -75,6 +75,7 @@ module.exports = function(grunt) {
       base: process.cwd(),
       only: '.',
       push: true,
+      forcePush: false,
       message: 'Updates',
       silent: false
     };
@@ -208,7 +209,7 @@ module.exports = function(grunt) {
           if (options.push) {
             log('Pushing');
             return git.push(options.remote, options.branch,
-                options.clone);
+                options.clone, options.forcePush);
           } else {
             return Q.resolve();
           }
