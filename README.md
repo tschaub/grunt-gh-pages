@@ -70,7 +70,7 @@ grunt.initConfig({
 
 ### Options
 
-The default task options work for simple cases cases.  The options described below let you push to alternate branches, customize your commit messages, and more.
+The default task options work for simple cases.  The options described below let you push to alternate branches, customize your commit messages, and more.
 
 Options for all targets can be configured on the task level.  Individual tasks can also have their own options that override task level options.
 
