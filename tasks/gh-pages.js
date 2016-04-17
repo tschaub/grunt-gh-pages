@@ -1,3 +1,4 @@
+var fs = require('fs');
 var path = require('path');
 
 var Q = require('q');
@@ -76,7 +77,8 @@ module.exports = function(grunt) {
       only: '.',
       push: true,
       message: 'Updates',
-      silent: false
+      silent: false,
+      remove: null
     };
 
     // override defaults with any task options
@@ -164,6 +166,21 @@ module.exports = function(grunt) {
         .then(function() {
           log('Copying files');
           return copy(files, options.base, options.clone);
+        })
+        .then(function() {
+          if (options.remove) {
+            log('Removing unnecessary files');
+
+            var removeFiles = grunt.file.expand({
+              filter: 'isFile',
+              cwd: options.clone,
+            }, options.remove);
+
+            removeFiles.forEach(function(rmFile) {
+              fs.unlinkSync(options.clone + '/' + rmFile);
+            });
+          }
+          return Q.resolve();
         })
         .then(function() {
           log('Adding all');

@@ -34,7 +34,7 @@ grunt.initConfig({
 });
 ```
 
-Running this task with `grunt gh-pages` will create a temporary clone of the current repository, create a `gh-pages` branch if one doesn't already exist, copy over all files from the `dist` directory that match patterns from the`src` configuration, commit all changes, and push to the `origin` remote.
+Running this task with `grunt gh-pages` will create a temporary clone of the current repository, create a `gh-pages` branch if one doesn't already exist, copy over all files from the `dist` directory that match patterns from the `src` configuration, commit all changes, and push to the `origin` remote. Refer to Grunt's [globbing][] guide for details on what a `src` pattern can be.
 
 If a `gh-pages` branch already exists, it will be updated with all commits from the remote before adding any commits from the provided `src` files.
 
@@ -341,6 +341,31 @@ grunt.initConfig({
 ```
 
 
+#### <a id="optionsremove">options.remove</a>
+ * type: `string`
+ * default: `null`
+
+File matching pattern for files to remove after copying the source directory. If your source contains files that should not be pushed to github pages, you can specify them with this option. The file pattern will be relative to the temporary working directory of files to push. Refer to Grunt's [globbing][] guide for details on what a `remove` pattern can be.
+
+Example of the `remove` option:
+
+```js
+/**
+ * This will copy all of `www` but then remove `www/node_modules/**`
+ * before pushing to GitHub Pages.
+ */
+grunt.initConfig({
+  'gh-pages': {
+    options: {
+      base: 'www',
+      remove: 'node_modules/**'
+    },
+    src: '**/*'
+  }
+});
+```
+
+
 #### <a id="optionspush">options.push</a>
  * type: `boolean`
  * default: `true`
@@ -414,3 +439,5 @@ grunt.initConfig({
 Note that this plugin requires Git 1.7.6 or higher (because it uses the `--exit-code` option for `git ls-remote`).  If you'd like to see this working with earlier versions of Git, please [open an issue](https://github.com/tschaub/grunt-gh-pages/issues).
 
 [![Current Status](https://secure.travis-ci.org/tschaub/grunt-gh-pages.png?branch=master)](https://travis-ci.org/tschaub/grunt-gh-pages)
+
+[globbing]: http://gruntjs.com/configuring-tasks#globbing-patterns
