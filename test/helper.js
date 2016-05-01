@@ -4,7 +4,7 @@ var fs = require('fs');
 
 var chai = require('chai');
 var tmp = require('tmp');
-var wrench = require('wrench');
+var fse = require('fs-extra');
 
 var fixtures = path.join(__dirname, 'fixtures');
 var tmpDir = 'tmp';
@@ -43,7 +43,7 @@ function cloneFixture(name, done) {
       return done(error);
     }
     var scratch = path.join(dir, name);
-    wrench.copyDirRecursive(fixture, scratch, function(error) {
+    fse.copy(fixture, scratch, function(error) {
       done(error, scratch);
     });
   });
@@ -90,14 +90,9 @@ exports.buildFixture = function(name, done) {
  * @param {function} done Callback.
  */
 exports.afterFixture = function(scratch, done) {
-  var error;
-  try {
-    wrench.rmdirSyncRecursive(scratch, false);
-    wrench.rmdirSyncRecursive(tmpDir, false);
-  } catch (err) {
-    error = err;
-  }
-  done(error);
+  fse.removeSync(scratch, false);
+  fse.removeSync(tmpDir, false);
+  done();
 };
 
 

@@ -2,7 +2,7 @@ var path = require('path');
 
 var Q = require('q');
 var urlSafe = require('url-safe');
-var wrench = require('wrench');
+var fse = require('fs-extra');
 
 var pkg = require('../package.json');
 var git = require('../lib/git');
@@ -227,7 +227,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('gh-pages-clean', 'Clean cache dir', function() {
-    wrench.rmdirSyncRecursive(getCacheDir(), true);
+    fse.removeSync(getCacheDir());
   });
 
 };
