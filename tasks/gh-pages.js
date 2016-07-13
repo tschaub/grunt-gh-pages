@@ -43,6 +43,49 @@ function getRepo(options) {
   }
 }
 
+function checkSourceBranchMatches(options) {
+  if(options.from) {
+    var repo;
+    return git(['branch'])
+      .progress(function(chunk) {
+        repo = String(chunk).split(/[\n\r]/).shift();
+      })
+      .then(function() {
+        if(repo !== '* ' + options.from) {
+          var message = 'You cannot push changes from this branch.  Got "' +
+           repo + '" ' + 'but expected "* ' + options.from + '".  Please ' +
+           'switch to the "' + options.from + '" branch first.';
+          return Q.reject(new Error(message));
+        } else {
+          return Q.resolve();
+        }
+      });
+  } else {
+    return Q.resolve();
+  }
+}
+
+function checkSourceParityToOrigin(options) {
+  if(options.match && options.from) {
+    var diff;
+    return git(['diff', options.remote + '/' + options.from])
+      .progress(function(chunk) {
+        diff = chunk;
+      })
+      .then(function() {
+        if(diff) {
+          var message = 'Local branch does not match remote branch. ' +
+          'Please ensure your local checkout is committed and up-to-date ' +
+          'with the remote branch first.';
+          return Q.reject(new Error(message));
+        } else {
+          return getRepo(options);
+        }
+      });
+  } else {
+    return getRepo(options);
+  }
+}
 
 /** @param {Object} grunt Grunt. */
 module.exports = function(grunt) {
@@ -118,7 +161,10 @@ module.exports = function(grunt) {
     git.exe(options.git);
 
     var repoUrl;
-    getRepo(options)
+    checkSourceBranchMatches(options)
+        .then(function() {
+          return checkSourceParityToOrigin(options);
+        })
         .then(function(repo) {
           repoUrl = repo;
           log('Cloning ' + urlSafe(repo,'[secure]') + ' into ' + options.clone);
