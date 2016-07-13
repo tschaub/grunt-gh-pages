@@ -46,14 +46,14 @@ function getRepo(options) {
 function checkSourceBranchMatches(options) {
   if(options.from) {
     var repo;
-    return git(['branch'])
+    return git(['rev-parse', '--abbrev-ref', 'HEAD'])
       .progress(function(chunk) {
-        repo = String(chunk).split(/[\n\r]/).shift();
+        repo = String(chunk).trim();
       })
       .then(function() {
-        if(repo !== '* ' + options.from) {
+        if(repo !== options.from) {
           var message = 'You cannot push changes from this branch.  Got "' +
-           repo + '" ' + 'but expected "* ' + options.from + '".  Please ' +
+           repo + '" ' + 'but expected "' + options.from + '".  Please ' +
            'switch to the "' + options.from + '" branch first.';
           return Q.reject(new Error(message));
         } else {
