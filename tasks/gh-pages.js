@@ -30,8 +30,8 @@ function getRemoteUrl(dir, remote) {
       .fail(function(err) {
         return Q.reject(new Error(
             'Failed to get remote.origin.url (task must either be run in a ' +
-            'git repository with a configured origin remote or must be ' +
-            'configured with the "repo" option).'));
+            'git repository with a configured "' + options.currentRemote +
+            'remote or must be configured with the "repo" option).'));
       });
 }
 
@@ -39,7 +39,7 @@ function getRepo(options) {
   if (options.repo) {
     return Q.resolve(options.repo);
   } else {
-    return getRemoteUrl(process.cwd(), 'origin');
+    return getRemoteUrl(process.cwd(), options.currentRemote);
   }
 }
 
@@ -72,6 +72,7 @@ module.exports = function(grunt) {
       dotfiles: false,
       branch: 'gh-pages',
       remote: 'origin',
+      currentRemote: 'origin',
       base: process.cwd(),
       only: '.',
       push: true,
