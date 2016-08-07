@@ -23,8 +23,8 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "async": "0.2.9",
-    "graceful-fs": "3.0.8",
+    "async": "2.0.1",
+    "graceful-fs": "4.1.5",
     "q": "0.9.3",
     "q-io": "1.6.5",
     "url-safe": "^1.0.0",
