@@ -14,12 +14,7 @@
   "bugs": {
     "url": "https://github.com/tschaub/grunt-gh-pages/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://tschaub.mit-license.org/"
-    }
-  ],
+  "license": "MIT",
   "main": "Gruntfile.js",
   "engines": {
     "node": ">= 0.8.0"
