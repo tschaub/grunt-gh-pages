@@ -1,6 +1,7 @@
 language: node_js
 node_js:
   - "6"
-  - "0.10"
-  - "0.8"
-before_install: npm i -g npm
+  - "4"
+cache:
+  directories:
+    - node_modules
