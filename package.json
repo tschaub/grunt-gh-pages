@@ -16,9 +16,6 @@
   },
   "license": "MIT",
   "main": "Gruntfile.js",
-  "engines": {
-    "node": ">= 0.8.0"
-  },
   "scripts": {
     "pretest": "eslint lib tasks test Gruntfile.js",
     "test": "grunt test"
@@ -29,7 +26,7 @@
     "graceful-fs": "4.1.5",
     "q": "0.9.3",
     "q-io": "2.0.2",
-    "url-safe": "^1.0.0"
+    "url-safe": "^2.0.0"
   },
   "devDependencies": {
     "chai": "1.8.1",
