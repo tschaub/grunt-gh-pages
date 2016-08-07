@@ -1,8 +1,5 @@
-var path = require('path');
-
-var tmp = require('tmp');
-
 var git = require('../../../lib/git');
+var tmp = require('tmp');
 
 
 /** @param {Object} grunt Grunt. */

@@ -20,6 +20,7 @@
     "node": ">= 0.8.0"
   },
   "scripts": {
+    "pretest": "eslint lib tasks test Gruntfile.js",
     "test": "grunt test"
   },
   "dependencies": {
@@ -32,15 +33,19 @@
   },
   "devDependencies": {
     "chai": "1.8.1",
+    "eslint": "^3.2.2",
+    "eslint-config-tschaub": "^5.0.0",
     "grunt": "0.4.2",
     "grunt-cafe-mocha": "0.1.10",
-    "grunt-contrib-jshint": "0.7.2",
-    "grunt-contrib-watch": "0.5.3",
     "grunt-cli": "0.1.11",
+    "grunt-contrib-watch": "0.5.3",
     "tmp": "0.0.20"
   },
   "peerDependencies": {
     "grunt": ">=0.4.0"
+  },
+  "eslintConfig": {
+    "extends": "tschaub"
   },
   "keywords": [
     "gruntplugin",
