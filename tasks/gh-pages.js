@@ -191,14 +191,14 @@ module.exports = function(grunt) {
             var deferred = Q.defer();
             git.tag(options.tag, options.clone)
               .then(function() {
-                  return deferred.resolve();
-                })
+                return deferred.resolve();
+              })
               .fail(function(error) {
-                  // tagging failed probably because this tag alredy exists
-                  log('Tagging failed, continuing');
-                  grunt.log.debug(error);
-                  return deferred.resolve();
-                });
+                // tagging failed probably because this tag alredy exists
+                log('Tagging failed, continuing');
+                grunt.log.debug(error);
+                return deferred.resolve();
+              });
             return deferred.promise;
           } else {
             return Q.resolve();

@@ -14,22 +14,18 @@
   "bugs": {
     "url": "https://github.com/tschaub/grunt-gh-pages/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://tschaub.mit-license.org/"
-    }
-  ],
+  "license": "MIT",
   "main": "Gruntfile.js",
   "engines": {
     "node": ">= 0.8.0"
   },
   "scripts": {
+    "pretest": "eslint lib tasks test Gruntfile.js",
     "test": "grunt test"
   },
   "dependencies": {
-    "async": "0.2.9",
-    "graceful-fs": "3.0.8",
+    "async": "2.0.1",
+    "graceful-fs": "4.1.5",
     "q": "0.9.3",
     "q-io": "1.6.5",
     "url-safe": "^1.0.0",
@@ -37,15 +33,19 @@
   },
   "devDependencies": {
     "chai": "1.8.1",
+    "eslint": "^3.2.2",
+    "eslint-config-tschaub": "^5.0.0",
     "grunt": "0.4.2",
     "grunt-cafe-mocha": "0.1.10",
-    "grunt-contrib-jshint": "0.7.2",
-    "grunt-contrib-watch": "0.5.3",
     "grunt-cli": "0.1.11",
+    "grunt-contrib-watch": "0.5.3",
     "tmp": "0.0.20"
   },
   "peerDependencies": {
     "grunt": ">=0.4.0"
+  },
+  "eslintConfig": {
+    "extends": "tschaub"
   },
   "keywords": [
     "gruntplugin",

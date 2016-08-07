@@ -1,5 +1,3 @@
-
-
 /**
  * @param {Object} grunt Grunt.
  */
@@ -19,52 +17,26 @@ module.exports = function(grunt) {
         newer: true
       }
     },
-    jshint: {
-      options: {
-        jshintrc: '.jshintrc'
-      },
-      gruntfile: {
-        src: 'Gruntfile.js'
-      },
-      tasks: {
-        src: tasksSrc
-      },
-      test: {
-        options: {
-          jshintrc: 'test/.jshintrc'
-        },
-        src: testSrc,
-        newer: true
-      },
-      fixtures: {
-        src: fixturesSrc
-      }
-    },
     watch: {
-      gruntfile: {
-        files: 'Gruntfile.js',
-        tasks: ['jshint:gruntfile']
-      },
       tasks: {
         files: tasksSrc,
-        tasks: ['jshint:tasks', 'cafemocha']
+        tasks: ['cafemocha']
       },
       test: {
         files: testSrc,
-        tasks: ['jshint:test', 'cafemocha']
+        tasks: ['cafemocha']
       },
       fixtures: {
         files: fixturesSrc,
-        tasks: ['jshint:fixtures', 'cafemocha']
+        tasks: ['cafemocha']
       }
     }
   });
 
   grunt.loadNpmTasks('grunt-cafe-mocha');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('test', ['jshint', 'cafemocha']);
+  grunt.registerTask('test', ['cafemocha']);
 
   grunt.registerTask('default', ['test']);
 
