@@ -1,13 +1,10 @@
-var path = require('path');
-
 var Q = require('q');
-var urlSafe = require('url-safe');
-var wrench = require('wrench');
-
-var pkg = require('../package.json');
-var git = require('../lib/git');
-
 var copy = require('../lib/util').copy;
+var fse = require('fs-extra');
+var git = require('../lib/git');
+var path = require('path');
+var pkg = require('../package.json');
+var urlSafe = require('url-safe');
 
 function getCacheDir() {
   return path.join('.grunt', pkg.name);
@@ -227,7 +224,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('gh-pages-clean', 'Clean cache dir', function() {
-    wrench.rmdirSyncRecursive(getCacheDir(), true);
+    fse.removeSync(getCacheDir());
   });
 
 };
