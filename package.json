@@ -36,7 +36,7 @@
     "grunt-cafe-mocha": "0.1.10",
     "grunt-cli": "0.1.11",
     "grunt-contrib-watch": "0.5.3",
-    "tmp": "0.0.20"
+    "tmp": "0.0.31"
   },
   "peerDependencies": {
     "grunt": ">=0.4.0"
