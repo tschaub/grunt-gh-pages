@@ -3,10 +3,7 @@
   "description": "Publish to GitHub Pages with Grunt.",
   "version": "3.1.0",
   "homepage": "https://github.com/tschaub/grunt-gh-pages",
-  "author": {
-    "name": "Tim Schaub",
-    "url": "http://tschaub.net/"
-  },
+  "author": "Tim Schaub (http://tschaub.net/)",
   "repository": {
     "type": "git",
     "url": "git://github.com/tschaub/grunt-gh-pages.git"
@@ -15,9 +12,10 @@
     "url": "https://github.com/tschaub/grunt-gh-pages/issues"
   },
   "license": "MIT",
-  "main": "Gruntfile.js",
+  "main": "tasks/gh-pages.js",
   "scripts": {
-    "pretest": "eslint lib tasks test Gruntfile.js",
+    "eslint": "eslint .",
+    "pretest": "npm run eslint",
     "test": "grunt test"
   },
   "dependencies": {
@@ -53,5 +51,8 @@
   ],
   "files": [
     "{lib,tasks}/*.js"
-  ]
+  ],
+  "engines": {
+    "node": ">=6"
+  }
 }
