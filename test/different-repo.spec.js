@@ -49,10 +49,10 @@ describe('different-repo', () => {
 
   it('copies source files', done => {
     fs.exists(path.join(repo, 'hello.txt'), exists => {
-      if (!exists) {
-        done(new Error('Failed to find "hello.txt" in repo: ') + repo);
-      } else {
+      if (exists) {
         done();
+      } else {
+        done(new Error('Failed to find "hello.txt" in repo: ') + repo);
       }
     });
   });

@@ -14,13 +14,13 @@ const tmpDir = 'tmp';
  * @param {function(Error, Process)} done Callback.
  */
 function spawnGrunt(dir, done) {
-  if (!fs.existsSync(path.join(dir, 'Gruntfile.js'))) {
-    done(new Error(`Cannot find Gruntfile.js in dir: ${dir}`));
-  } else {
+  if (fs.existsSync(path.join(dir, 'Gruntfile.js'))) {
     const node = process.argv[0];
     const grunt = process.argv[1]; // assumes grunt drives these tests
     const child = cp.spawn(node, [grunt, '--verbose'], {cwd: dir});
     done(null, child);
+  } else {
+    done(new Error(`Cannot find Gruntfile.js in dir: ${dir}`));
   }
 }
 

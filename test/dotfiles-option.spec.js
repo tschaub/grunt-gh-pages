@@ -58,20 +58,20 @@ describe('dotfiles-option', () => {
 
   it('copies files with dots', done => {
     fs.exists(path.join(repo, '.one'), exists => {
-      if (!exists) {
-        done(new Error('Failed to find ".one" in repo: ') + repo);
-      } else {
+      if (exists) {
         done();
+      } else {
+        done(new Error('Failed to find ".one" in repo: ') + repo);
       }
     });
   });
 
   it('copies files in directories with dots', done => {
     fs.exists(path.join(repo, 'foo', '.bar', 'two'), exists => {
-      if (!exists) {
-        done(new Error('Failed to find "foo/.bar/two" in repo: ') + repo);
-      } else {
+      if (exists) {
         done();
+      } else {
+        done(new Error('Failed to find "foo/.bar/two" in repo: ') + repo);
       }
     });
   });
