@@ -50,5 +50,8 @@
     "grunt",
     "gh-pages",
     "github"
+  ],
+  "files": [
+    "{lib,tasks}/*.js"
   ]
 }
