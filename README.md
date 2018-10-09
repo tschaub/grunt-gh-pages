@@ -1,5 +1,11 @@
 # grunt-gh-pages
+
 **Publish to GitHub Pages with Grunt**
+
+[![NPM version](https://img.shields.io/npm/v/grunt-gh-pages.svg)](https://www.npmjs.com/package/grunt-gh-pages)
+[![Build Status](https://img.shields.io/travis/tschaub/grunt-gh-pages/master.svg)](https://travis-ci.org/tschaub/grunt-gh-pages)
+[![Dependency Status](https://img.shields.io/david/tschaub/grunt-gh-pages.svg)](https://david-dm.org/tschaub/grunt-gh-pages)
+[![devDependency Status](https://img.shields.io/david/dev/tschaub/grunt-gh-pages.svg)](https://david-dm.org/tschaub/grunt-gh-pages?type=dev)
 
 Use [Grunt](https://gruntjs.com/) to push to your `gh-pages` branch hosted on GitHub or any other branch anywhere else.
 
