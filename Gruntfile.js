@@ -2,13 +2,12 @@
  * @param {Object} grunt Grunt.
  */
 module.exports = function(grunt) {
-
-  var tasksSrc = 'tasks/**/*.js';
-  var testSrc = 'test/**/*.js';
-  var fixturesSrc = 'test/fixtures/**/*.js';
+  const tasksSrc = 'tasks/**/*.js';
+  const testSrc = 'test/**/*.js';
+  const fixturesSrc = 'test/fixtures/**/*.js';
 
   grunt.initConfig({
-    cafemocha: {
+    mochaTest: {
       options: {
         reporter: 'spec'
       },
@@ -20,24 +19,23 @@ module.exports = function(grunt) {
     watch: {
       tasks: {
         files: tasksSrc,
-        tasks: ['cafemocha']
+        tasks: ['mochaTest']
       },
       test: {
         files: testSrc,
-        tasks: ['cafemocha']
+        tasks: ['mochaTest']
       },
       fixtures: {
         files: fixturesSrc,
-        tasks: ['cafemocha']
+        tasks: ['mochaTest']
       }
     }
   });
 
-  grunt.loadNpmTasks('grunt-cafe-mocha');
+  grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('test', ['cafemocha']);
+  grunt.registerTask('test', ['mochaTest']);
 
   grunt.registerTask('default', ['test']);
-
 };

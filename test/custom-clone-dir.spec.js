@@ -1,16 +1,17 @@
-var fs = require('fs');
-var path = require('path');
+const fs = require('fs');
+const path = require('path');
 
-var helper = require('./helper');
+const helper = require('./helper');
 
-var assert = helper.assert;
+const assert = helper.assert;
 
-describe('custom-clone-dir', function() {
-  var fixture, repo;
+describe('custom-clone-dir', () => {
+  let fixture;
+  let repo;
 
   before(function(done) {
     this.timeout(3000);
-    helper.buildFixture('custom-clone-dir', function(error, dir) {
+    helper.buildFixture('custom-clone-dir', (error, dir) => {
       if (error) {
         return done(error);
       }
@@ -20,12 +21,12 @@ describe('custom-clone-dir', function() {
     });
   });
 
-  after(function(done) {
+  after(done => {
     helper.afterFixture(fixture, done);
   });
 
-  it('creates clone-dir directory', function(done) {
-    fs.stat(repo, function(error, stats) {
+  it('creates clone-dir directory', done => {
+    fs.stat(repo, (error, stats) => {
       if (error) {
         return done(error);
       }
@@ -34,12 +35,12 @@ describe('custom-clone-dir', function() {
     });
   });
 
-  it('pushes the gh-pages branch to remote', function(done) {
-    helper.git(['ls-remote', '--exit-code', '.', 'origin/gh-pages'], repo)
-        .then(function() {
-          done();
-        })
-        .fail(done);
+  it('pushes the gh-pages branch to remote', done => {
+    helper
+      .git(['ls-remote', '--exit-code', '.', 'origin/gh-pages'], repo)
+      .then(() => {
+        done();
+      })
+      .fail(done);
   });
-
 });

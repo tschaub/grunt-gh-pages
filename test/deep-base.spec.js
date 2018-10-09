@@ -1,16 +1,17 @@
-var fs = require('fs');
-var path = require('path');
+const fs = require('fs');
+const path = require('path');
 
-var helper = require('./helper');
+const helper = require('./helper');
 
-var assert = helper.assert;
+const assert = helper.assert;
 
-describe('deep-base', function() {
-  var fixture, repo;
+describe('deep-base', () => {
+  let fixture;
+  let repo;
 
   before(function(done) {
     this.timeout(3000);
-    helper.buildFixture('deep-base', function(error, dir) {
+    helper.buildFixture('deep-base', (error, dir) => {
       if (error) {
         return done(error);
       }
@@ -20,47 +21,48 @@ describe('deep-base', function() {
     });
   });
 
-  after(function(done) {
+  after(done => {
     helper.afterFixture(fixture, done);
   });
 
-  it('creates .grunt/grunt-gh-pages/gh-pages/src directory', function(done) {
-    fs.stat(repo, function(error, stats) {
+  it('creates .grunt/grunt-gh-pages/gh-pages/src directory', done => {
+    fs.stat(repo, (error, stats) => {
       assert.isTrue(!error, 'no error');
       assert.isTrue(stats.isDirectory(), 'directory');
       done(error);
     });
   });
 
-  it('creates a gh-pages branch', function(done) {
-    var branch;
-    helper.git(['rev-parse', '--abbrev-ref', 'HEAD'], repo)
-        .progress(function(chunk) {
-          branch = String(chunk);
-        })
-        .then(function() {
-          assert.strictEqual(branch, 'gh-pages\n', 'branch created');
-          done();
-        })
-        .fail(done);
+  it('creates a gh-pages branch', done => {
+    let branch;
+    helper
+      .git(['rev-parse', '--abbrev-ref', 'HEAD'], repo)
+      .progress(chunk => {
+        branch = String(chunk);
+      })
+      .then(() => {
+        assert.strictEqual(branch, 'gh-pages\n', 'branch created');
+        done();
+      })
+      .fail(done);
   });
 
-  it('copies source files relative to the base', function(done) {
-    fs.exists(path.join(repo, 'hello.txt'), function(exists) {
-      if (!exists) {
-        done(new Error('Failed to find "hello.txt" in repo: ') + repo);
-      } else {
+  it('copies source files relative to the base', done => {
+    fs.exists(path.join(repo, 'hello.txt'), exists => {
+      if (exists) {
         done();
+      } else {
+        done(new Error('Failed to find "hello.txt" in repo: ') + repo);
       }
     });
   });
 
-  it('pushes the gh-pages branch to remote', function(done) {
-    helper.git(['ls-remote', '--exit-code', '.', 'origin/gh-pages'], repo)
-        .then(function() {
-          done();
-        })
-        .fail(done);
+  it('pushes the gh-pages branch to remote', done => {
+    helper
+      .git(['ls-remote', '--exit-code', '.', 'origin/gh-pages'], repo)
+      .then(() => {
+        done();
+      })
+      .fail(done);
   });
-
 });

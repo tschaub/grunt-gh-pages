@@ -1,13 +1,12 @@
-var path = require('path');
+const path = require('path');
 
-var assert = require('../helper').assert;
+const assert = require('../helper').assert;
 
-var util = require('../../lib/util');
+const util = require('../../lib/util');
 
-describe('util', function() {
-
-  var files;
-  beforeEach(function() {
+describe('util', () => {
+  let files;
+  beforeEach(() => {
     files = [
       path.join('a1', 'b1', 'c2', 'd2.txt'),
       path.join('a1', 'b2', 'c2', 'd1.txt'),
@@ -24,11 +23,11 @@ describe('util', function() {
     ].slice();
   });
 
-  describe('byShortPath', function() {
-    it('sorts an array of filepaths, shortest first', function() {
+  describe('byShortPath', () => {
+    it('sorts an array of filepaths, shortest first', () => {
       files.sort(util.byShortPath);
 
-      var expected = [
+      const expected = [
         path.join('a1.txt'),
         path.join('a2.txt'),
         path.join('a1', 'b1.txt'),
@@ -47,13 +46,12 @@ describe('util', function() {
     });
   });
 
-  describe('uniqueDirs', function() {
-
-    it('gets a list of unique directory paths', function() {
+  describe('uniqueDirs', () => {
+    it('gets a list of unique directory paths', () => {
       // not comparing order here, so we sort both
-      var got = util.uniqueDirs(files).sort();
+      const got = util.uniqueDirs(files).sort();
 
-      var expected = [
+      const expected = [
         '.',
         'a1',
         'a2',
@@ -68,15 +66,13 @@ describe('util', function() {
 
       assert.deepEqual(got, expected);
     });
-
   });
 
-  describe('dirsToCreate', function() {
+  describe('dirsToCreate', () => {
+    it('gets a sorted list of directories to create', () => {
+      const got = util.dirsToCreate(files);
 
-    it('gets a sorted list of directories to create', function() {
-      var got = util.dirsToCreate(files);
-
-      var expected = [
+      const expected = [
         '.',
         'a1',
         'a2',
@@ -91,7 +87,5 @@ describe('util', function() {
 
       assert.deepEqual(got, expected);
     });
-
   });
-
 });

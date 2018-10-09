@@ -1,10 +1,8 @@
-var git = require('../../../lib/git');
-var path = require('path');
-
+const path = require('path');
+const git = require('../../../lib/git');
 
 /** @param {Object} grunt Grunt. */
 module.exports = function(grunt) {
-
   grunt.initConfig({
     'gh-pages': {
       options: {
@@ -21,25 +19,24 @@ module.exports = function(grunt) {
   grunt.loadTasks('../../../tasks');
 
   grunt.registerTask('init', function() {
-    var done = this.async();
-    var cwd = path.join(__dirname, 'repo');
-    git.init(cwd)
-        .then(function() {
-          return git.add('.', cwd);
-        })
-        .then(function() {
-          return git(['config', 'user.email', 'mail@example.com'], cwd);
-        })
-        .then(function() {
-          return git(['config', 'user.name', 'My Name'], cwd);
-        })
-        .then(function() {
-          return git.commit('Initial commit', cwd);
-        })
-        .then(done, done);
-
+    const done = this.async();
+    const cwd = path.join(__dirname, 'repo');
+    git
+      .init(cwd)
+      .then(() => {
+        return git.add('.', cwd);
+      })
+      .then(() => {
+        return git(['config', 'user.email', 'mail@example.com'], cwd);
+      })
+      .then(() => {
+        return git(['config', 'user.name', 'My Name'], cwd);
+      })
+      .then(() => {
+        return git.commit('Initial commit', cwd);
+      })
+      .then(done, done);
   });
 
   grunt.registerTask('default', ['init', 'gh-pages']);
-
 };
