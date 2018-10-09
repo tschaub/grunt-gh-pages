@@ -7,7 +7,7 @@ module.exports = function(grunt) {
   const fixturesSrc = 'test/fixtures/**/*.js';
 
   grunt.initConfig({
-    cafemocha: {
+    mochaTest: {
       options: {
         reporter: 'spec'
       },
@@ -19,23 +19,23 @@ module.exports = function(grunt) {
     watch: {
       tasks: {
         files: tasksSrc,
-        tasks: ['cafemocha']
+        tasks: ['mochaTest']
       },
       test: {
         files: testSrc,
-        tasks: ['cafemocha']
+        tasks: ['mochaTest']
       },
       fixtures: {
         files: fixturesSrc,
-        tasks: ['cafemocha']
+        tasks: ['mochaTest']
       }
     }
   });
 
-  grunt.loadNpmTasks('grunt-cafe-mocha');
+  grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('test', ['cafemocha']);
+  grunt.registerTask('test', ['mochaTest']);
 
   grunt.registerTask('default', ['test']);
 };
