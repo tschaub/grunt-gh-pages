@@ -104,7 +104,7 @@ exports.afterFixture = function(scratch, done) {
 exports.git = require('../lib/git');
 
 /** @type {boolean} */
-chai.Assertion.includeStack = true;
+chai.config.includeStack = true;
 
 /**
  * Chai's assert function configured to include stacks on failure.
