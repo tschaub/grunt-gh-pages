@@ -1,12 +1,12 @@
-var fs = require('fs');
-var path = require('path');
+const fs = require('fs');
+const path = require('path');
 
-var helper = require('./helper');
+const helper = require('./helper');
 
-var assert = helper.assert;
+const assert = helper.assert;
 
 describe('add', function() {
-  var fixture, repo1, repo2;
+  let fixture, repo1, repo2;
 
   before(function(done) {
     this.timeout(3000);
@@ -39,31 +39,37 @@ describe('add', function() {
   });
 
   it('creates a gh-pages branch', function(done) {
-    var branch;
-    helper.git(['rev-parse', '--abbrev-ref', 'HEAD'], repo1)
-        .progress(function(chunk) {
-          branch = String(chunk);
-        })
-        .then(function() {
-          assert.strictEqual(branch, 'gh-pages\n', 'branch created');
-          done();
-        })
-        .fail(done);
+    let branch;
+    helper
+      .git(['rev-parse', '--abbrev-ref', 'HEAD'], repo1)
+      .progress(function(chunk) {
+        branch = String(chunk);
+      })
+      .then(function() {
+        assert.strictEqual(branch, 'gh-pages\n', 'branch created');
+        done();
+      })
+      .fail(done);
   });
 
   it('copies source files relative to the base', function() {
-    assert.strictEqual(fs.readFileSync(path.join(repo1, 'first.txt'), 'utf8'),
-        'first');
-    assert.strictEqual(fs.readFileSync(path.join(repo1, 'sub', 'sub.txt'),
-        'utf8'), 'first');
+    assert.strictEqual(
+      fs.readFileSync(path.join(repo1, 'first.txt'), 'utf8'),
+      'first'
+    );
+    assert.strictEqual(
+      fs.readFileSync(path.join(repo1, 'sub', 'sub.txt'), 'utf8'),
+      'first'
+    );
   });
 
   it('pushes the gh-pages branch to remote', function(done) {
-    helper.git(['ls-remote', '--exit-code', '.', 'origin/gh-pages'], repo1)
-        .then(function() {
-          done();
-        })
-        .fail(done);
+    helper
+      .git(['ls-remote', '--exit-code', '.', 'origin/gh-pages'], repo1)
+      .then(function() {
+        done();
+      })
+      .fail(done);
   });
 
   /**
@@ -81,33 +87,40 @@ describe('add', function() {
   });
 
   it('creates a gh-pages branch', function(done) {
-    var branch;
-    helper.git(['rev-parse', '--abbrev-ref', 'HEAD'], repo2)
-        .progress(function(chunk) {
-          branch = String(chunk);
-        })
-        .then(function() {
-          assert.strictEqual(branch, 'gh-pages\n', 'branch created');
-          done();
-        })
-        .fail(done);
+    let branch;
+    helper
+      .git(['rev-parse', '--abbrev-ref', 'HEAD'], repo2)
+      .progress(function(chunk) {
+        branch = String(chunk);
+      })
+      .then(function() {
+        assert.strictEqual(branch, 'gh-pages\n', 'branch created');
+        done();
+      })
+      .fail(done);
   });
 
   it('overwrites, but does not remove existing', function() {
-    assert.strictEqual(fs.readFileSync(path.join(repo2, 'first.txt'), 'utf8'),
-        'first');
-    assert.strictEqual(fs.readFileSync(path.join(repo2, 'second.txt'), 'utf8'),
-        'second');
-    assert.strictEqual(fs.readFileSync(path.join(repo2, 'sub', 'sub.txt'),
-        'utf8'), 'second');
+    assert.strictEqual(
+      fs.readFileSync(path.join(repo2, 'first.txt'), 'utf8'),
+      'first'
+    );
+    assert.strictEqual(
+      fs.readFileSync(path.join(repo2, 'second.txt'), 'utf8'),
+      'second'
+    );
+    assert.strictEqual(
+      fs.readFileSync(path.join(repo2, 'sub', 'sub.txt'), 'utf8'),
+      'second'
+    );
   });
 
   it('pushes the gh-pages branch to remote', function(done) {
-    helper.git(['ls-remote', '--exit-code', '.', 'origin/gh-pages'], repo2)
-        .then(function() {
-          done();
-        })
-        .fail(done);
+    helper
+      .git(['ls-remote', '--exit-code', '.', 'origin/gh-pages'], repo2)
+      .then(function() {
+        done();
+      })
+      .fail(done);
   });
-
 });

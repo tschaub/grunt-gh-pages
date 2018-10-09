@@ -1,12 +1,12 @@
-var fs = require('fs');
-var path = require('path');
+const fs = require('fs');
+const path = require('path');
 
-var helper = require('./helper');
+const helper = require('./helper');
 
-var assert = helper.assert;
+const assert = helper.assert;
 
 describe('deep-base', function() {
-  var fixture, repo;
+  let fixture, repo;
 
   before(function(done) {
     this.timeout(3000);
@@ -33,16 +33,17 @@ describe('deep-base', function() {
   });
 
   it('creates a gh-pages branch', function(done) {
-    var branch;
-    helper.git(['rev-parse', '--abbrev-ref', 'HEAD'], repo)
-        .progress(function(chunk) {
-          branch = String(chunk);
-        })
-        .then(function() {
-          assert.strictEqual(branch, 'gh-pages\n', 'branch created');
-          done();
-        })
-        .fail(done);
+    let branch;
+    helper
+      .git(['rev-parse', '--abbrev-ref', 'HEAD'], repo)
+      .progress(function(chunk) {
+        branch = String(chunk);
+      })
+      .then(function() {
+        assert.strictEqual(branch, 'gh-pages\n', 'branch created');
+        done();
+      })
+      .fail(done);
   });
 
   it('copies source files relative to the base', function(done) {
@@ -56,11 +57,11 @@ describe('deep-base', function() {
   });
 
   it('pushes the gh-pages branch to remote', function(done) {
-    helper.git(['ls-remote', '--exit-code', '.', 'origin/gh-pages'], repo)
-        .then(function() {
-          done();
-        })
-        .fail(done);
+    helper
+      .git(['ls-remote', '--exit-code', '.', 'origin/gh-pages'], repo)
+      .then(function() {
+        done();
+      })
+      .fail(done);
   });
-
 });

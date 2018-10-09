@@ -2,10 +2,9 @@
  * @param {Object} grunt Grunt.
  */
 module.exports = function(grunt) {
-
-  var tasksSrc = 'tasks/**/*.js';
-  var testSrc = 'test/**/*.js';
-  var fixturesSrc = 'test/fixtures/**/*.js';
+  const tasksSrc = 'tasks/**/*.js';
+  const testSrc = 'test/**/*.js';
+  const fixturesSrc = 'test/fixtures/**/*.js';
 
   grunt.initConfig({
     cafemocha: {
@@ -39,5 +38,4 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['cafemocha']);
 
   grunt.registerTask('default', ['test']);
-
 };

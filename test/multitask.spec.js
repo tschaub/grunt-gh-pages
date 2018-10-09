@@ -1,12 +1,12 @@
-var fs = require('fs');
-var path = require('path');
+const fs = require('fs');
+const path = require('path');
 
-var helper = require('./helper');
+const helper = require('./helper');
 
-var assert = helper.assert;
+const assert = helper.assert;
 
 describe('multitask', function() {
-  var fixture, repo1, repo2;
+  let fixture, repo1, repo2;
 
   before(function(done) {
     this.timeout(3000);
@@ -42,19 +42,20 @@ describe('multitask', function() {
   });
 
   it('pushes the gh-pages branch to remote', function(done) {
-    helper.git(['ls-remote', '--exit-code', '.', 'origin/gh-pages'], repo1)
-        .then(function() {
-          done();
-        })
-        .fail(done);
+    helper
+      .git(['ls-remote', '--exit-code', '.', 'origin/gh-pages'], repo1)
+      .then(function() {
+        done();
+      })
+      .fail(done);
   });
 
   it('pushes the branch-two branch to remote', function(done) {
-    helper.git(['ls-remote', '--exit-code', '.', 'origin/branch-two'], repo2)
-        .then(function() {
-          done();
-        })
-        .fail(done);
+    helper
+      .git(['ls-remote', '--exit-code', '.', 'origin/branch-two'], repo2)
+      .then(function() {
+        done();
+      })
+      .fail(done);
   });
-
 });

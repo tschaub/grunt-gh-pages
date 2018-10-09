@@ -1,13 +1,12 @@
-var chai = require('chai');
-var cp = require('child_process');
-var fs = require('fs');
-var fse = require('fs-extra');
-var path = require('path');
-var tmp = require('tmp');
+const chai = require('chai');
+const cp = require('child_process');
+const fs = require('fs');
+const fse = require('fs-extra');
+const path = require('path');
+const tmp = require('tmp');
 
-var fixtures = path.join(__dirname, 'fixtures');
-var tmpDir = 'tmp';
-
+const fixtures = path.join(__dirname, 'fixtures');
+const tmpDir = 'tmp';
 
 /**
  * Spawn a Grunt process.
@@ -18,13 +17,12 @@ function spawnGrunt(dir, done) {
   if (!fs.existsSync(path.join(dir, 'Gruntfile.js'))) {
     done(new Error('Cannot find Gruntfile.js in dir: ' + dir));
   } else {
-    var node = process.argv[0];
-    var grunt = process.argv[1]; // assumes grunt drives these tests
-    var child = cp.spawn(node, [grunt, '--verbose'], {cwd: dir});
+    const node = process.argv[0];
+    const grunt = process.argv[1]; // assumes grunt drives these tests
+    const child = cp.spawn(node, [grunt, '--verbose'], {cwd: dir});
     done(null, child);
   }
 }
-
 
 /**
  * Set up before running tests.
@@ -32,7 +30,7 @@ function spawnGrunt(dir, done) {
  * @param {function} done Callback.
  */
 function cloneFixture(name, done) {
-  var fixture = path.join(fixtures, name);
+  const fixture = path.join(fixtures, name);
   if (!fs.existsSync(tmpDir)) {
     fs.mkdirSync(tmpDir);
   }
@@ -41,13 +39,12 @@ function cloneFixture(name, done) {
     if (error) {
       return done(error);
     }
-    var scratch = path.join(dir, name);
+    const scratch = path.join(dir, name);
     fse.copy(fixture, scratch, function(error) {
       done(error, scratch);
     });
   });
 }
-
 
 /**
  * Clone a fixture and run the default Grunt task in it.
@@ -64,7 +61,7 @@ exports.buildFixture = function(name, done) {
       if (error) {
         return done(error);
       }
-      var messages = [];
+      const messages = [];
       child.stderr.on('data', function(chunk) {
         messages.push(chunk.toString());
       });
@@ -82,14 +79,13 @@ exports.buildFixture = function(name, done) {
   });
 };
 
-
 /**
  * Clean up after running tests.
  * @param {string} scratch Path to scratch directory.
  * @param {function} done Callback.
  */
 exports.afterFixture = function(scratch, done) {
-  var error;
+  let error;
   try {
     fse.removeSync(scratch);
     fse.removeSync(tmpDir);
@@ -99,7 +95,6 @@ exports.afterFixture = function(scratch, done) {
   done(error);
 };
 
-
 /**
  * Util function for handling spawned git processes as promises.
  * @param {Array.<string>} args Arguments.
@@ -108,10 +103,8 @@ exports.afterFixture = function(scratch, done) {
  */
 exports.git = require('../lib/git');
 
-
 /** @type {boolean} */
 chai.Assertion.includeStack = true;
-
 
 /**
  * Chai's assert function configured to include stacks on failure.

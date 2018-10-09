@@ -1,12 +1,12 @@
-var fs = require('fs');
-var path = require('path');
+const fs = require('fs');
+const path = require('path');
 
-var helper = require('./helper');
+const helper = require('./helper');
 
-var assert = helper.assert;
+const assert = helper.assert;
 
 describe('custom-clone-dir', function() {
-  var fixture, repo;
+  let fixture, repo;
 
   before(function(done) {
     this.timeout(3000);
@@ -35,11 +35,11 @@ describe('custom-clone-dir', function() {
   });
 
   it('pushes the gh-pages branch to remote', function(done) {
-    helper.git(['ls-remote', '--exit-code', '.', 'origin/gh-pages'], repo)
-        .then(function() {
-          done();
-        })
-        .fail(done);
+    helper
+      .git(['ls-remote', '--exit-code', '.', 'origin/gh-pages'], repo)
+      .then(function() {
+        done();
+      })
+      .fail(done);
   });
-
 });
