@@ -1,5 +1,9 @@
 # Change Log
 
+## 3.0.0
+
+Updated dependencies and stopped testing on Node 4 (see [#72][#72])
+
 ## 2.1.0
 
 Upgrade to `q-io@2.0.6` based on npm audit.
@@ -20,3 +24,4 @@ There are no API breaking changes in this release, it only includes dependency u
 [#62]: https://github.com/tschaub/grunt-gh-pages/pull/62
 [#65]: https://github.com/tschaub/grunt-gh-pages/pull/65
 [#66]: https://github.com/tschaub/grunt-gh-pages/pull/66
+[#72]: https://github.com/tschaub/grunt-gh-pages/pull/72
