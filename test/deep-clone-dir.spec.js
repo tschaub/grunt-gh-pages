@@ -5,12 +5,13 @@ const helper = require('./helper');
 
 const assert = helper.assert;
 
-describe('deep-clone-dir', function() {
-  let fixture, repo;
+describe('deep-clone-dir', () => {
+  let fixture;
+  let repo;
 
   before(function(done) {
     this.timeout(3000);
-    helper.buildFixture('deep-clone-dir', function(error, dir) {
+    helper.buildFixture('deep-clone-dir', (error, dir) => {
       if (error) {
         return done(error);
       }
@@ -20,12 +21,12 @@ describe('deep-clone-dir', function() {
     });
   });
 
-  after(function(done) {
+  after(done => {
     helper.afterFixture(fixture, done);
   });
 
-  it('creates clone-dir directory', function(done) {
-    fs.stat(repo, function(error, stats) {
+  it('creates clone-dir directory', done => {
+    fs.stat(repo, (error, stats) => {
       if (error) {
         return done(error);
       }
@@ -34,10 +35,10 @@ describe('deep-clone-dir', function() {
     });
   });
 
-  it('pushes the gh-pages branch to remote', function(done) {
+  it('pushes the gh-pages branch to remote', done => {
     helper
       .git(['ls-remote', '--exit-code', '.', 'origin/gh-pages'], repo)
-      .then(function() {
+      .then(() => {
         done();
       })
       .fail(done);

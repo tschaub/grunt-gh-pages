@@ -1,5 +1,5 @@
-const git = require('../../../lib/git');
 const path = require('path');
+const git = require('../../../lib/git');
 
 /** @param {Object} grunt Grunt. */
 module.exports = function(grunt) {
@@ -24,16 +24,16 @@ module.exports = function(grunt) {
     const cwd = path.join(__dirname, 'repo');
     git
       .init(cwd)
-      .then(function() {
+      .then(() => {
         return git.add('.', cwd);
       })
-      .then(function() {
+      .then(() => {
         return git(['config', 'user.email', 'mail@example.com'], cwd);
       })
-      .then(function() {
+      .then(() => {
         return git(['config', 'user.name', 'My Name'], cwd);
       })
-      .then(function() {
+      .then(() => {
         return git.commit('Initial commit', cwd);
       })
       .then(done, done);

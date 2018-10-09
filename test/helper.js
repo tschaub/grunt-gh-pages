@@ -1,8 +1,8 @@
-const chai = require('chai');
 const cp = require('child_process');
 const fs = require('fs');
-const fse = require('fs-extra');
 const path = require('path');
+const fse = require('fs-extra');
+const chai = require('chai');
 const tmp = require('tmp');
 
 const fixtures = path.join(__dirname, 'fixtures');
@@ -15,7 +15,7 @@ const tmpDir = 'tmp';
  */
 function spawnGrunt(dir, done) {
   if (!fs.existsSync(path.join(dir, 'Gruntfile.js'))) {
-    done(new Error('Cannot find Gruntfile.js in dir: ' + dir));
+    done(new Error(`Cannot find Gruntfile.js in dir: ${dir}`));
   } else {
     const node = process.argv[0];
     const grunt = process.argv[1]; // assumes grunt drives these tests
@@ -35,12 +35,12 @@ function cloneFixture(name, done) {
     fs.mkdirSync(tmpDir);
   }
 
-  tmp.dir({dir: tmpDir}, function(error, dir) {
+  tmp.dir({dir: tmpDir}, (error, dir) => {
     if (error) {
       return done(error);
     }
     const scratch = path.join(dir, name);
-    fse.copy(fixture, scratch, function(error) {
+    fse.copy(fixture, scratch, error => {
       done(error, scratch);
     });
   });
@@ -53,24 +53,24 @@ function cloneFixture(name, done) {
  *     fails.  Called with the cloned fixture directory if the task succeeds.
  */
 exports.buildFixture = function(name, done) {
-  cloneFixture(name, function(error, scratch) {
+  cloneFixture(name, (error, scratch) => {
     if (error) {
       return done(error);
     }
-    spawnGrunt(scratch, function(error, child) {
+    spawnGrunt(scratch, (error, child) => {
       if (error) {
         return done(error);
       }
       const messages = [];
-      child.stderr.on('data', function(chunk) {
+      child.stderr.on('data', chunk => {
         messages.push(chunk.toString());
       });
-      child.stdout.on('data', function(chunk) {
+      child.stdout.on('data', chunk => {
         messages.push(chunk.toString());
       });
-      child.on('close', function(code) {
+      child.on('close', code => {
         if (code !== 0) {
-          done(new Error('Task failed: ' + messages.join('')));
+          done(new Error(`Task failed: ${messages.join('')}`));
         } else {
           done(null, scratch);
         }

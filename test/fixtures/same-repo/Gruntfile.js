@@ -1,5 +1,5 @@
-const git = require('../../../lib/git');
 const tmp = require('tmp');
+const git = require('../../../lib/git');
 
 /** @param {Object} grunt Grunt. */
 module.exports = function(grunt) {
@@ -19,30 +19,30 @@ module.exports = function(grunt) {
 
   grunt.registerTask('init', function() {
     const done = this.async();
-    tmp.dir(function(error, remote) {
+    tmp.dir((error, remote) => {
       if (error) {
         return done(error);
       }
       git(['init', '--bare'], remote)
-        .then(function() {
+        .then(() => {
           return git.init(__dirname);
         })
-        .then(function() {
+        .then(() => {
           return git.add('Gruntfile.js', __dirname);
         })
-        .then(function() {
+        .then(() => {
           return git(['config', 'user.email', 'mail@example.com'], __dirname);
         })
-        .then(function() {
+        .then(() => {
           return git(['config', 'user.name', 'My Name'], __dirname);
         })
-        .then(function() {
+        .then(() => {
           return git.commit('Initial commit', __dirname);
         })
-        .then(function() {
+        .then(() => {
           return git(['remote', 'add', 'origin', remote], __dirname);
         })
-        .then(function() {
+        .then(() => {
           return git(['push', 'origin', 'master'], __dirname);
         })
         .then(done, done);

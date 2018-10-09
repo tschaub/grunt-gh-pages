@@ -5,12 +5,13 @@ const helper = require('./helper');
 
 const assert = helper.assert;
 
-describe('different-repo', function() {
-  let fixture, repo;
+describe('different-repo', () => {
+  let fixture;
+  let repo;
 
   before(function(done) {
     this.timeout(3000);
-    helper.buildFixture('different-repo', function(error, dir) {
+    helper.buildFixture('different-repo', (error, dir) => {
       if (error) {
         return done(error);
       }
@@ -20,34 +21,34 @@ describe('different-repo', function() {
     });
   });
 
-  after(function(done) {
+  after(done => {
     helper.afterFixture(fixture, done);
   });
 
-  it('creates .grunt/grunt-gh-pages/gh-pages/src directory', function(done) {
-    fs.stat(repo, function(error, stats) {
+  it('creates .grunt/grunt-gh-pages/gh-pages/src directory', done => {
+    fs.stat(repo, (error, stats) => {
       assert.isTrue(!error, 'no error');
       assert.isTrue(stats.isDirectory(), 'directory');
       done(error);
     });
   });
 
-  it('creates a gh-pages branch', function(done) {
+  it('creates a gh-pages branch', done => {
     let branch;
     helper
       .git(['rev-parse', '--abbrev-ref', 'HEAD'], repo)
-      .progress(function(chunk) {
+      .progress(chunk => {
         branch = String(chunk);
       })
-      .then(function() {
+      .then(() => {
         assert.strictEqual(branch, 'gh-pages\n', 'branch created');
         done();
       })
       .fail(done);
   });
 
-  it('copies source files', function(done) {
-    fs.exists(path.join(repo, 'hello.txt'), function(exists) {
+  it('copies source files', done => {
+    fs.exists(path.join(repo, 'hello.txt'), exists => {
       if (!exists) {
         done(new Error('Failed to find "hello.txt" in repo: ') + repo);
       } else {
@@ -56,8 +57,8 @@ describe('different-repo', function() {
     });
   });
 
-  it('copies correct source files', function(done) {
-    fs.readFile(path.join(repo, 'hello.txt'), function(err, data) {
+  it('copies correct source files', done => {
+    fs.readFile(path.join(repo, 'hello.txt'), (err, data) => {
       if (err) {
         done(err);
       } else {
@@ -67,10 +68,10 @@ describe('different-repo', function() {
     });
   });
 
-  it('pushes the gh-pages branch to remote', function(done) {
+  it('pushes the gh-pages branch to remote', done => {
     helper
       .git(['ls-remote', '--exit-code', '.', 'origin/gh-pages'], repo)
-      .then(function() {
+      .then(() => {
         done();
       })
       .fail(done);

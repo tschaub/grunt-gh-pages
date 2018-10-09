@@ -5,12 +5,13 @@ const helper = require('./helper');
 
 const assert = helper.assert;
 
-describe('unpushed', function() {
-  let fixture, repo;
+describe('unpushed', () => {
+  let fixture;
+  let repo;
 
   before(function(done) {
     this.timeout(3000);
-    helper.buildFixture('unpushed', function(error, dir) {
+    helper.buildFixture('unpushed', (error, dir) => {
       if (error) {
         return done(error);
       }
@@ -20,39 +21,39 @@ describe('unpushed', function() {
     });
   });
 
-  after(function(done) {
+  after(done => {
     helper.afterFixture(fixture, done);
   });
 
-  it('creates .grunt/grunt-gh-pages/gh-pages/src directory', function(done) {
-    fs.stat(repo, function(error, stats) {
+  it('creates .grunt/grunt-gh-pages/gh-pages/src directory', done => {
+    fs.stat(repo, (error, stats) => {
       assert.isTrue(!error, 'no error');
       assert.isTrue(stats.isDirectory(), 'directory');
       done(error);
     });
   });
 
-  it('creates a gh-pages branch', function(done) {
+  it('creates a gh-pages branch', done => {
     let branch;
     helper
       .git(['rev-parse', '--abbrev-ref', 'HEAD'], repo)
-      .progress(function(chunk) {
+      .progress(chunk => {
         branch = String(chunk);
       })
-      .then(function() {
+      .then(() => {
         assert.strictEqual(branch, 'gh-pages\n', 'branch created');
         done();
       })
       .fail(done);
   });
 
-  it('does not push the gh-pages branch to remote', function(done) {
+  it('does not push the gh-pages branch to remote', done => {
     helper
       .git(['ls-remote', '--exit-code', '.', 'origin/gh-pages'], repo)
-      .then(function() {
+      .then(() => {
         done(new Error('Expected not to find origin/gh-pages'));
       })
-      .fail(function() {
+      .fail(() => {
         // failure on the ls-remote is what we're looking for (no push)
         done();
       });

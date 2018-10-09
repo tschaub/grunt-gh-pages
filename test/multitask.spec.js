@@ -5,12 +5,14 @@ const helper = require('./helper');
 
 const assert = helper.assert;
 
-describe('multitask', function() {
-  let fixture, repo1, repo2;
+describe('multitask', () => {
+  let fixture;
+  let repo1;
+  let repo2;
 
   before(function(done) {
     this.timeout(3000);
-    helper.buildFixture('multitask', function(error, dir) {
+    helper.buildFixture('multitask', (error, dir) => {
       if (error) {
         return done(error);
       }
@@ -21,39 +23,39 @@ describe('multitask', function() {
     });
   });
 
-  after(function(done) {
+  after(done => {
     helper.afterFixture(fixture, done);
   });
 
-  it('creates .grunt/grunt-gh-pages/gh-pages/first directory', function(done) {
-    fs.stat(repo1, function(error, stats) {
+  it('creates .grunt/grunt-gh-pages/gh-pages/first directory', done => {
+    fs.stat(repo1, (error, stats) => {
       assert.isTrue(!error, 'no error');
       assert.isTrue(stats.isDirectory(), 'directory');
       done(error);
     });
   });
 
-  it('creates .grunt/grunt-gh-pages/gh-pages/second directory', function(done) {
-    fs.stat(repo2, function(error, stats) {
+  it('creates .grunt/grunt-gh-pages/gh-pages/second directory', done => {
+    fs.stat(repo2, (error, stats) => {
       assert.isTrue(!error, 'no error');
       assert.isTrue(stats.isDirectory(), 'directory');
       done(error);
     });
   });
 
-  it('pushes the gh-pages branch to remote', function(done) {
+  it('pushes the gh-pages branch to remote', done => {
     helper
       .git(['ls-remote', '--exit-code', '.', 'origin/gh-pages'], repo1)
-      .then(function() {
+      .then(() => {
         done();
       })
       .fail(done);
   });
 
-  it('pushes the branch-two branch to remote', function(done) {
+  it('pushes the branch-two branch to remote', done => {
     helper
       .git(['ls-remote', '--exit-code', '.', 'origin/branch-two'], repo2)
-      .then(function() {
+      .then(() => {
         done();
       })
       .fail(done);
