@@ -1,5 +1,9 @@
 # Change Log
 
+## 2.1.0
+
+Upgrade to `q-io@2.0.6` based on npm audit.
+
 ## 2.0.0
 
 Tests are no longer run on Node < 4.  The task may still work on older versions of Node, but since it is no longer tested there, use at your own risk.  Tests are currently run on Node 4 and Node 6.
