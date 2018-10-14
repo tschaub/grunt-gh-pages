@@ -83,9 +83,11 @@ module.exports = function(grunt) {
     // allow command line options to override
     let value;
     for (const option in defaults) {
-      value = grunt.option(`${pkg.name}-${option}`);
-      if (value !== undefined) {
-        options[option] = value;
+      if (Object.prototype.hasOwnProperty.call(defaults, option)) {
+        value = grunt.option(`${pkg.name}-${option}`);
+        if (typeof value !== 'undefined') {
+          options[option] = value;
+        }
       }
     }
 
