@@ -69,10 +69,10 @@ exports.buildFixture = function(name, done) {
         messages.push(chunk.toString());
       });
       child.on('close', code => {
-        if (code !== 0) {
-          done(new Error(`Task failed: ${messages.join('')}`));
-        } else {
+        if (code === 0) {
           done(null, scratch);
+        } else {
+          done(new Error(`Task failed: ${messages.join('')}`));
         }
       });
     });
