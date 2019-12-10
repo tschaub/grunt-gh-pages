@@ -12,13 +12,14 @@ env:
 
 jobs:
   run:
-    name: Node ${{ matrix.node }}
-    runs-on: ubuntu-latest
+    name: Node ${{ matrix.node }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
 
     strategy:
       fail-fast: false
       matrix:
         node: [8, 10, 12]
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Clone repository
@@ -37,3 +38,4 @@ jobs:
 
       - name: Run tests
         run: npm test
+        shell: bash
