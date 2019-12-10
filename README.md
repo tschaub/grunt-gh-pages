@@ -3,7 +3,7 @@
 **Publish to GitHub Pages with Grunt**
 
 [![NPM version](https://img.shields.io/npm/v/grunt-gh-pages.svg)](https://www.npmjs.com/package/grunt-gh-pages)
-[![Build Status](https://img.shields.io/travis/tschaub/grunt-gh-pages/master.svg)](https://travis-ci.org/tschaub/grunt-gh-pages)
+[![Build Status](https://github.com/tschaub/grunt-gh-pages/workflows/Tests/badge.svg)](https://github.com/tschaub/grunt-gh-pages/actions?workflow=Tests)
 [![Dependency Status](https://img.shields.io/david/tschaub/grunt-gh-pages.svg)](https://david-dm.org/tschaub/grunt-gh-pages)
 [![devDependency Status](https://img.shields.io/david/dev/tschaub/grunt-gh-pages.svg)](https://david-dm.org/tschaub/grunt-gh-pages?type=dev)
 
