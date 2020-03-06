@@ -42,7 +42,7 @@ describe('util', () => {
         path.join('a1', 'b2', 'c2', 'd1.txt')
       ];
 
-      assert.deepEqual(files, expected);
+      assert.deepStrictEqual(files, expected);
     });
   });
 
@@ -64,7 +64,7 @@ describe('util', () => {
         path.join('a2', 'b1')
       ].sort();
 
-      assert.deepEqual(got, expected);
+      assert.deepStrictEqual(got, expected);
     });
   });
 
@@ -85,7 +85,7 @@ describe('util', () => {
         path.join('a1', 'b2', 'c2')
       ];
 
-      assert.deepEqual(got, expected);
+      assert.deepStrictEqual(got, expected);
     });
   });
 });
