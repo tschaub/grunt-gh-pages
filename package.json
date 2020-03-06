@@ -19,7 +19,7 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "async": "^3.1.0",
+    "async": "^3.2.0",
     "fs-extra": "^8.1.0",
     "graceful-fs": "^4.2.3",
     "q": "^1.5.1",
