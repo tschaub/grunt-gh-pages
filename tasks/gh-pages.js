@@ -20,14 +20,14 @@ function getRemoteUrl(dir, remote) {
     })
     .then(() => {
       if (repo) {
-        return Q.resolve(repo);
+        return Promise.resolve(repo);
       }
-      return Q.reject(
+      return Promise.reject(
         new Error('Failed to get repo URL from options or current directory.')
       );
     })
     .fail(err => {
-      return Q.reject(
+      return Promise.reject(
         new Error(
           'Failed to get remote.origin.url (task must either be run in a ' +
             'git repository with a configured origin remote or must be ' +
@@ -39,7 +39,7 @@ function getRemoteUrl(dir, remote) {
 
 function getRepo(options) {
   if (options.repo) {
-    return Q.resolve(options.repo);
+    return Promise.resolve(options.repo);
   }
   return getRemoteUrl(process.cwd(), 'origin');
 }
@@ -135,9 +135,9 @@ module.exports = function(grunt) {
               `but expected "${repoUrl}" in ${options.clone}.  ` +
               'If you have changed your "repo" option, try ' +
               'running `grunt gh-pages-clean` first.';
-            return Q.reject(new Error(message));
+            return Promise.reject(new Error(message));
           }
-          return Q.resolve();
+          return Promise.resolve();
         });
       })
       .then(() => {
@@ -158,7 +158,7 @@ module.exports = function(grunt) {
           log('Removing files');
           return git.rm(only.join(' '), options.clone);
         }
-        return Q.resolve();
+        return Promise.resolve();
       })
       .then(() => {
         log('Copying files');
@@ -180,7 +180,7 @@ module.exports = function(grunt) {
             );
           });
         }
-        return Q.resolve();
+        return Promise.resolve();
       })
       .then(() => {
         log('Committing');
@@ -210,7 +210,7 @@ module.exports = function(grunt) {
           log('Pushing');
           return git.push(options.remote, options.branch, options.clone);
         }
-        return Q.resolve();
+        return Promise.resolve();
       })
       .then(
         () => {
