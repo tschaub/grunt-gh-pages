@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "async": "^3.2.0",
-    "fs-extra": "^8.1.0",
+    "fs-extra": "^9.0.0",
     "graceful-fs": "^4.2.3",
     "q": "^1.5.1",
     "q-io": "^1.13.6",
@@ -28,12 +28,12 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^5.16.0",
+    "eslint": "^6.8.0",
     "eslint-config-tschaub": "^13.1.0",
-    "grunt": "^1.0.3",
+    "grunt": "^1.1.0",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-mocha-test": "^0.13.3",
-    "mocha": "^6.2.2",
+    "mocha": "^7.1.1",
     "tmp": "^0.1.0"
   },
   "peerDependencies": {
@@ -53,6 +53,6 @@
     "{lib,tasks}/*.js"
   ],
   "engines": {
-    "node": ">=6"
+    "node": ">=10"
   }
 }
