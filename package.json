@@ -23,7 +23,6 @@
     "fs-extra": "^8.1.0",
     "graceful-fs": "^4.2.3",
     "q": "^1.5.1",
-    "q-io": "^1.13.6",
     "url-safe": "^2.0.0"
   },
   "devDependencies": {
