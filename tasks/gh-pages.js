@@ -1,6 +1,5 @@
 const path = require('path');
 const fse = require('fs-extra');
-const Q = require('q');
 const urlSafe = require('url-safe');
 const copy = require('../lib/util').copy;
 const git = require('../lib/git');
@@ -11,23 +10,18 @@ function getCacheDir() {
 }
 
 function getRemoteUrl(dir, remote) {
-  let repo;
   return git(['config', '--get', `remote.${remote}.url`], dir)
-    .progress(chunk => {
-      repo = String(chunk)
-        .split(/[\n\r]/)
-        .shift();
-    })
-    .then(() => {
+    .then(data => {
+      const repo = data.split(/[\n\r]/).shift();
       if (repo) {
-        return Q.resolve(repo);
+        return Promise.resolve(repo);
       }
-      return Q.reject(
+      return Promise.reject(
         new Error('Failed to get repo URL from options or current directory.')
       );
     })
-    .fail(err => {
-      return Q.reject(
+    .catch(err => {
+      return Promise.reject(
         new Error(
           'Failed to get remote.origin.url (task must either be run in a ' +
             'git repository with a configured origin remote or must be ' +
@@ -39,7 +33,7 @@ function getRemoteUrl(dir, remote) {
 
 function getRepo(options) {
   if (options.repo) {
-    return Q.resolve(options.repo);
+    return Promise.resolve(options.repo);
   }
   return getRemoteUrl(process.cwd(), 'origin');
 }
@@ -135,9 +129,9 @@ module.exports = function(grunt) {
               `but expected "${repoUrl}" in ${options.clone}.  ` +
               'If you have changed your "repo" option, try ' +
               'running `grunt gh-pages-clean` first.';
-            return Q.reject(new Error(message));
+            return Promise.reject(new Error(message));
           }
-          return Q.resolve();
+          return Promise.resolve();
         });
       })
       .then(() => {
@@ -158,7 +152,7 @@ module.exports = function(grunt) {
           log('Removing files');
           return git.rm(only.join(' '), options.clone);
         }
-        return Q.resolve();
+        return Promise.resolve();
       })
       .then(() => {
         log('Copying files');
@@ -180,7 +174,7 @@ module.exports = function(grunt) {
             );
           });
         }
-        return Q.resolve();
+        return Promise.resolve();
       })
       .then(() => {
         log('Committing');
@@ -189,28 +183,29 @@ module.exports = function(grunt) {
       .then(() => {
         if (options.tag) {
           log('Tagging');
-          const deferred = Q.defer();
-          git
-            .tag(options.tag, options.clone)
-            .then(() => {
-              return deferred.resolve();
-            })
-            .fail(error => {
-              // tagging failed probably because this tag alredy exists
-              log('Tagging failed, continuing');
-              grunt.log.debug(error);
-              return deferred.resolve();
-            });
-          return deferred.promise;
+          const promise = new Promise((resolve, reject) => {
+            git
+              .tag(options.tag, options.clone)
+              .then(() => {
+                return resolve();
+              })
+              .catch(error => {
+                // tagging failed probably because this tag alredy exists
+                log('Tagging failed, continuing');
+                grunt.log.debug(error);
+                return resolve();
+              });
+          });
+          return promise;
         }
-        return Q.resolve();
+        return Promise.resolve();
       })
       .then(() => {
         if (options.push) {
           log('Pushing');
           return git.push(options.remote, options.branch, options.clone);
         }
-        return Q.resolve();
+        return Promise.resolve();
       })
       .then(
         () => {
@@ -223,9 +218,6 @@ module.exports = function(grunt) {
             );
           }
           done(error);
-        },
-        progress => {
-          grunt.verbose.writeln(progress);
         }
       );
   });

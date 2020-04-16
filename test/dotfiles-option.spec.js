@@ -34,17 +34,13 @@ describe('dotfiles-option', () => {
   });
 
   it('creates a gh-pages branch', done => {
-    let branch;
     helper
       .git(['rev-parse', '--abbrev-ref', 'HEAD'], repo)
-      .progress(chunk => {
-        branch = String(chunk);
-      })
-      .then(() => {
+      .then(branch => {
         assert.strictEqual(branch, 'gh-pages\n', 'branch created');
         done();
       })
-      .fail(done);
+      .catch(done);
   });
 
   it('pushes the gh-pages branch to remote', done => {
@@ -53,7 +49,7 @@ describe('dotfiles-option', () => {
       .then(() => {
         done();
       })
-      .fail(done);
+      .catch(done);
   });
 
   it('copies files with dots', done => {

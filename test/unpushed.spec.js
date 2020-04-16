@@ -34,17 +34,13 @@ describe('unpushed', () => {
   });
 
   it('creates a gh-pages branch', done => {
-    let branch;
     helper
       .git(['rev-parse', '--abbrev-ref', 'HEAD'], repo)
-      .progress(chunk => {
-        branch = String(chunk);
-      })
-      .then(() => {
+      .then(branch => {
         assert.strictEqual(branch, 'gh-pages\n', 'branch created');
         done();
       })
-      .fail(done);
+      .catch(done);
   });
 
   it('does not push the gh-pages branch to remote', done => {
@@ -53,7 +49,7 @@ describe('unpushed', () => {
       .then(() => {
         done(new Error('Expected not to find origin/gh-pages'));
       })
-      .fail(() => {
+      .catch(() => {
         // failure on the ls-remote is what we're looking for (no push)
         done();
       });
