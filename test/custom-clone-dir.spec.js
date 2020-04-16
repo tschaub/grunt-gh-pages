@@ -41,6 +41,6 @@ describe('custom-clone-dir', () => {
       .then(() => {
         done();
       })
-      .fail(done);
+      .catch(done);
   });
 });

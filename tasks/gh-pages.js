@@ -1,6 +1,5 @@
 const path = require('path');
 const fse = require('fs-extra');
-const Q = require('q');
 const urlSafe = require('url-safe');
 const copy = require('../lib/util').copy;
 const git = require('../lib/git');
@@ -11,14 +10,9 @@ function getCacheDir() {
 }
 
 function getRemoteUrl(dir, remote) {
-  let repo;
   return git(['config', '--get', `remote.${remote}.url`], dir)
-    .progress(chunk => {
-      repo = String(chunk)
-        .split(/[\n\r]/)
-        .shift();
-    })
-    .then(() => {
+    .then(data => {
+      const repo = data.split(/[\n\r]/).shift();
       if (repo) {
         return Promise.resolve(repo);
       }
@@ -26,7 +20,7 @@ function getRemoteUrl(dir, remote) {
         new Error('Failed to get repo URL from options or current directory.')
       );
     })
-    .fail(err => {
+    .catch(err => {
       return Promise.reject(
         new Error(
           'Failed to get remote.origin.url (task must either be run in a ' +
@@ -189,21 +183,22 @@ module.exports = function(grunt) {
       .then(() => {
         if (options.tag) {
           log('Tagging');
-          const deferred = Q.defer();
-          git
-            .tag(options.tag, options.clone)
-            .then(() => {
-              return deferred.resolve();
-            })
-            .fail(error => {
-              // tagging failed probably because this tag alredy exists
-              log('Tagging failed, continuing');
-              grunt.log.debug(error);
-              return deferred.resolve();
-            });
-          return deferred.promise;
+          const promise = new Promise((resolve, reject) => {
+            git
+              .tag(options.tag, options.clone)
+              .then(() => {
+                return resolve();
+              })
+              .catch(error => {
+                // tagging failed probably because this tag alredy exists
+                log('Tagging failed, continuing');
+                grunt.log.debug(error);
+                return resolve();
+              });
+          });
+          return promise;
         }
-        return Q.resolve();
+        return Promise.resolve();
       })
       .then(() => {
         if (options.push) {
@@ -223,9 +218,6 @@ module.exports = function(grunt) {
             );
           }
           done(error);
-        },
-        progress => {
-          grunt.verbose.writeln(progress);
         }
       );
   });

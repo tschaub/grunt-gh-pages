@@ -41,6 +41,6 @@ describe('deep-clone-dir', () => {
       .then(() => {
         done();
       })
-      .fail(done);
+      .catch(done);
   });
 });

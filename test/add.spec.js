@@ -41,17 +41,13 @@ describe('add', () => {
   });
 
   it('creates a gh-pages branch', done => {
-    let branch;
     helper
       .git(['rev-parse', '--abbrev-ref', 'HEAD'], repo1)
-      .progress(chunk => {
-        branch = String(chunk);
-      })
-      .then(() => {
+      .then(branch => {
         assert.strictEqual(branch, 'gh-pages\n', 'branch created');
         done();
       })
-      .fail(done);
+      .catch(done);
   });
 
   it('copies source files relative to the base', () => {
@@ -71,7 +67,7 @@ describe('add', () => {
       .then(() => {
         done();
       })
-      .fail(done);
+      .catch(done);
   });
 
   /**
@@ -89,17 +85,13 @@ describe('add', () => {
   });
 
   it('creates a gh-pages branch', done => {
-    let branch;
     helper
       .git(['rev-parse', '--abbrev-ref', 'HEAD'], repo2)
-      .progress(chunk => {
-        branch = String(chunk);
-      })
-      .then(() => {
+      .then(branch => {
         assert.strictEqual(branch, 'gh-pages\n', 'branch created');
         done();
       })
-      .fail(done);
+      .catch(done);
   });
 
   it('overwrites, but does not remove existing', () => {
@@ -123,6 +115,6 @@ describe('add', () => {
       .then(() => {
         done();
       })
-      .fail(done);
+      .catch(done);
   });
 });

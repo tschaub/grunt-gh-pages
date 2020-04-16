@@ -49,7 +49,7 @@ describe('multitask', () => {
       .then(() => {
         done();
       })
-      .fail(done);
+      .catch(done);
   });
 
   it('pushes the branch-two branch to remote', done => {
@@ -58,6 +58,6 @@ describe('multitask', () => {
       .then(() => {
         done();
       })
-      .fail(done);
+      .catch(done);
   });
 });

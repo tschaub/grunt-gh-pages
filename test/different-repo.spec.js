@@ -34,17 +34,13 @@ describe('different-repo', () => {
   });
 
   it('creates a gh-pages branch', done => {
-    let branch;
     helper
       .git(['rev-parse', '--abbrev-ref', 'HEAD'], repo)
-      .progress(chunk => {
-        branch = String(chunk);
-      })
-      .then(() => {
+      .then(branch => {
         assert.strictEqual(branch, 'gh-pages\n', 'branch created');
         done();
       })
-      .fail(done);
+      .catch(done);
   });
 
   it('copies source files', done => {
@@ -74,6 +70,6 @@ describe('different-repo', () => {
       .then(() => {
         done();
       })
-      .fail(done);
+      .catch(done);
   });
 });
