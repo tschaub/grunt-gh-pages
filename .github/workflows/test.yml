@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [6, 8, 10, 12]
+        node: [8, 10, 12]
 
     steps:
       - name: Clone repository
@@ -26,7 +26,7 @@ jobs:
       - run: npm --version
 
       - name: Install npm dependencies
-        run: npm install # switch to `ci` when Node.js 6.x is dropped
+        run: npm ci
 
       - name: Run tests
         run: npm test
