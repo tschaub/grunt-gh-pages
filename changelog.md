@@ -1,5 +1,9 @@
 # Change Log
 
+## 4.0.0
+
+Drop support for Node 6 (see [#88][#88])
+
 ## 3.1.0
 
 Downgrade to `q-io@1.13.6` for a security fix (see [#73][#73])
@@ -30,3 +34,4 @@ There are no API breaking changes in this release, it only includes dependency u
 [#66]: https://github.com/tschaub/grunt-gh-pages/pull/66
 [#72]: https://github.com/tschaub/grunt-gh-pages/pull/72
 [#73]: https://github.com/tschaub/grunt-gh-pages/pull/73
+[#88]: https://github.com/tschaub/grunt-gh-pages/pull/88
