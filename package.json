@@ -31,7 +31,7 @@
     "grunt": "^1.0.3",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-mocha-test": "^0.13.3",
-    "mocha": "^7.1.1",
+    "mocha": "^10.2.0",
     "tmp": "^0.1.0"
   },
   "peerDependencies": {
